@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "minify": "^9.2.0",
+    "roadroller": "^2.1.0",
+    "zip-a-folder": "^1.1.7"
+  },
+  "scripts": {
+    "build": "rollup ./scripts/index.js --file index.js --format iife && node build.mjs"
+  }
+}

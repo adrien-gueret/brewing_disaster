@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Brewing Disaster</title>
+    <link href="./style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="thrownItem" class="thrownItem sprite"></div>
+
+    <main id="game">
+      <section id="title">
+        <h1 class="sectionTitle">Brewing Disaster</h1>
+
+        <p class="p">
+          <a href="#newGame">Click to start</a>
+        </p>
+
+        <div class="sprite cauldron"></div>
+
+        <div class="sprites">
+          <div class="sprite worm"></div>
+          <div class="sprite berry"></div>
+          <div class="sprite fly"></div>
+          <div class="sprite apple"></div>
+          <div class="sprite spider"></div>
+          <div class="sprite meat"></div>
+          <div class="sprite bat"></div>
+          <div class="sprite brain"></div>
+        </div>
+      </section>
+
+      <section id="newGame">
+        <h2 class="sectionTitle">Select your character</h2>
+        <div id="characterList" class="characters"></div>
+      </section>
+
+      <section id="rules">
+        <h2 class="sectionTitle">So, you want to be the best wizard?</h2>
+        <p class="p">
+          You share a <span class="sprite cauldron"></span>
+          <em>(cauldron)</em> with another wizard.<br />
+          This cauldron has an amount of <span class="sprite skull"></span>
+          <em>(putridity)</em>.<br />
+          Add ingredients to the cauldron to increase or decrease
+          <span class="sprite skull"></span>.<br />
+          First wizard to reach an amount of
+          <span class="sprite skull"></span> of <b>13</b> or <b>0</b> has
+          <b>lost</b>.<br />
+          Good luck!<br />
+          <a class="inlineLink" href="#levelList">Start</a>
+        </p>
+
+        <div class="footer">
+          <div class="footerInner column">
+            <p style="margin: 0">
+              <b>Your starter ingredients:</b>
+              <em id="playerDeckDesc"></em>
+            </p>
+            <ul id="ruleCardList" class="cardList"></ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="levelList">
+        <h2 class="sectionTitle">Your next duel is against:</h2>
+
+        <h3 id="wizardName" class="subTitle"></h3>
+
+        <q id="nextWizardDesc" class="subText"></q>
+
+        <p class="subText" style="margin: 4px 0">
+          Initial <span class="sprite skull"></span>:
+          <span id="nextWizardPutridity"></span>
+        </p>
+
+        <div style="flex-grow: 1">
+          <div id="opponentList"></div>
+        </div>
+        <div class="footer">
+          <div class="footerInner column">
+            <p style="margin: 0">
+              <b>Next opponent's ingredients:</b>
+              <em id="nextWizardDeckDesc"></em>
+            </p>
+            <ul id="nextWizardCards" class="cardList"></ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="battle">
+        <div id="scene" class="scene">
+          <canvas id="floorCanvas" width="848" height="92"></canvas>
+
+          <div id="playerScene" class="sprite character"></div>
+
+          <div id="cauldronContainer">
+            <div id="cauldronScene" class="sprite cauldron">
+              <div class="sprite skull"></div>
+              <div>:</div>
+              <div id="putridityValue"></div>
+            </div>
+            <div id="fire" class="sprite"></div>
+          </div>
+
+          <div id="opponentScene" class="sprite character"></div>
+
+          <div id="cauldronContent"></div>
+
+          <div class="battleResults">
+            <h2 class="resultsTitle won">Victory!</h2>
+            <h2 class="resultsTitle lost">Defeat...</h2>
+          </div>
+        </div>
+        <div class="footer">
+          <div class="footerInner">
+            <div id="hand"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="battleResultsWon">
+        <div id="chooseIngredients">
+          <h2 class="chooseTitle">Choose a pack of new ingredients</h2>
+          <div id="cardAwards" class="options"></div>
+        </div>
+
+        <div id="choosePassive">
+          <h2 class="chooseTitle">Choose an ingredient improvement</h2>
+          <div id="passiveAwards" class="options"></div>
+        </div>
+
+        <div id="chooseBonusDeck">
+          <h2 class="chooseTitle">Current ingredients</h2>
+          <ul id="playerDeck" class="cardList"></ul>
+        </div>
+      </section>
+
+      <section id="gameWin">
+        <h2 class="sectionTitle">Congratulations!</h2>
+        <p class="p">You have defeated all the wizards!</p>
+
+        <div id="unlockCharacter">
+          <p class="p">You have unlocked a new character:</p>
+          <div id="unlockedCharacter" class="characters"></div>
+        </div>
+
+        <div id="playWithOtherToUnlock">
+          <p class="p">Play with other character to unlock another ones!</p>
+        </div>
+
+        <div id="allCharactersUnlocked">
+          <p class="p">
+            And you have already unlocked all characters, meaning you have
+            completed the game, very well done!<br /><br />
+            Thanks for playing &lt;3
+          </p>
+        </div>
+
+        <p class="p">
+          <a class="inlineLink" href="#newGame">Play again</a>
+        </p>
+
+        <div class="sprite cauldron"></div>
+      </section>
+    </main>
+    <p class="p" id="gameOptions">
+      <label><input id="soundsCheckbox" type="checkbox" /> Enable sounds</label>
+    </p>
+
+    <script type="module" src="scripts/index.js"></script>
+  </body>
+</html>

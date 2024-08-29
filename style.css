@@ -1,0 +1,1279 @@
+/* ================= */
+/* ================= */
+/* Global */
+/* ================= */
+/* ================= */
+
+body {
+  --primary-dark: #3f2631;
+  --secondary-dark: #000;
+  --primary-light: #fff;
+  --light-background: #cbcab8;
+  --lighter-background: #d1d0c4;
+  --medium-background: #bdbcab;
+  --shadow: rgba(255, 255, 255, 0.3);
+  --border: #8c8d7a;
+  --radius: 3px;
+
+  font-family: monospace;
+  background-color: var(--primary-dark);
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: pixelated;
+  image-rendering: optimize-contrast;
+  -ms-interpolation-mode: nearest-neighbor;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  min-width: 768px;
+  min-height: 700px;
+}
+
+.thrownItem {
+  position: absolute;
+  top: -999px;
+  left: -999px;
+  width: 64px;
+  height: 64px;
+  z-index: 20;
+  offset-path: path("M 6 8 C -19 -66 -79 -227 -161 -31");
+  offset-distance: 0;
+  offset-rotate: reverse;
+  transform: scale(3);
+}
+
+.thrownItem.fromPlayer {
+  offset-path: path("M 50 8 C 75 -66 135 -227 217 -31");
+  offset-rotate: auto;
+}
+
+body:not([data-current-section]) #gameOptions,
+[data-current-section="title"] #gameOptions {
+  display: none;
+}
+
+#gameOptions {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--primary-light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#gameOptions label {
+  cursor: pointer;
+}
+
+#gameOptions input {
+  cursor: pointer;
+  margin: 0;
+  position: relative;
+  top: 2px;
+}
+
+/* ================= */
+/* ================= */
+/* Game container */
+/* ================= */
+/* ================= */
+
+main {
+  width: 768px;
+  height: 700px;
+  box-sizing: border-box;
+  border: 4px solid var(--border);
+  background-color: var(--medium-background);
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  overflow: hidden;
+  border-radius: var(--radius);
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+body:not([data-current-section]) main {
+  background-color: var(--secondary-dark);
+}
+
+main > section {
+  width: 100%;
+  position: relative;
+  display: none;
+  flex-direction: column;
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  margin: 12px;
+  text-align: center;
+}
+
+.subTitle {
+  font-weight: bolder;
+  margin: 8px;
+  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: 0;
+
+  span {
+    font-size: 1.2rem;
+    vertical-align: middle;
+    color: var(--primary-dark);
+  }
+}
+
+.p {
+  margin: 12px;
+}
+
+.subText {
+  font-size: 1.1rem;
+  text-align: center;
+  margin: 0;
+}
+
+q {
+  font-style: italic;
+  font-size: 1.2rem;
+}
+
+#characterList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.characters .card {
+  width: 300px;
+}
+
+#characterList .card.isLocked {
+  filter: grayscale(1) brightness(0.5);
+  opacity: 0.8;
+}
+
+#characterList .card.isLocked .image {
+  filter: contrast(0) brightness(0.5);
+}
+
+/* ================= */
+/* ================= */
+/* Battle won */
+/* ================= */
+/* ================= */
+#battleResultsWon {
+  flex-direction: row;
+}
+
+#battleResultsWon > div {
+  display: none;
+  flex-shrink: 0;
+}
+
+#battleResultsWon[data-type="ingredients"] #chooseIngredients,
+#battleResultsWon[data-type="passives"] #choosePassive {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+}
+
+#battleResultsWon #chooseBonusDeck {
+  display: flex;
+  flex-direction: column;
+  flex: auto;
+  border-left: 3px solid var(--border);
+  text-align: center;
+  background: var(--secondary-dark);
+  color: var(--primary-light);
+}
+
+#playerDeck {
+  width: auto;
+  gap: 3px;
+  overflow: auto;
+}
+
+.chooseTitle {
+  flex: 1;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+#chooseBonusDeck .chooseTitle {
+  font-size: 1rem;
+  flex: 0;
+}
+
+/* ================= */
+/* ================= */
+/* Game end */
+/* ================= */
+/* ================= */
+
+#gameWin {
+  font-size: 1.3rem;
+  text-align: center;
+  padding: 32px;
+}
+
+#gameWin .inlineLink {
+  padding: 12px;
+}
+
+#gameWin .card {
+  margin: 20px auto;
+}
+
+#unlockCharacter,
+#allCharactersUnlocked,
+#playWithOtherToUnlock {
+  display: none;
+}
+
+#gameWin.unlockCharacter #unlockCharacter,
+#gameWin.allCharactersUnlocked #allCharactersUnlocked,
+#gameWin.playWithOtherToUnlock #playWithOtherToUnlock {
+  display: block;
+}
+
+/* ================= */
+/* ================= */
+/* Title */
+/* ================= */
+/* ================= */
+#title {
+  background: var(--secondary-dark);
+  color: var(--primary-light);
+  text-align: center;
+}
+
+#title .sectionTitle {
+  font-family: monospace;
+  font-size: 3rem;
+  margin-top: 96px;
+  z-index: 5;
+}
+
+#title a {
+  font-size: 2rem;
+  text-transform: uppercase;
+  display: inline-block;
+  border: 3px solid currentColor;
+  padding: 24px;
+  margin-top: 96px;
+  background: var(--secondary-dark);
+  z-index: 5;
+  position: relative;
+}
+
+#title a:hover,
+#title a:focus {
+  background: var(--primary-dark);
+  transform: translateY(-4px);
+}
+
+#title .cauldron,
+#gameWin .cauldron {
+  z-index: 5;
+  transform: scale(8);
+  transform-origin: bottom center;
+  position: absolute;
+  bottom: -24px;
+  left: calc(50% - 16px);
+}
+
+#title .sprites {
+  position: absolute;
+  pointer-events: none;
+  display: flex;
+  justify-content: space-around;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+
+#title .sprites .sprite {
+  z-index: 0;
+  transform: scale(4) translateY(-16px);
+  animation: falling 10s ease-in infinite;
+}
+
+@keyframes falling {
+  from {
+    transform: scale(4) translateY(-16px) rotate(0);
+  }
+
+  to {
+    transform: scale(4) translateY(300px) rotate(3600deg);
+  }
+}
+
+#title .sprite.apple {
+  animation-delay: 33ms;
+}
+
+#title .sprite.spider {
+  animation-delay: 3s;
+}
+
+#title .sprite.fly {
+  animation-delay: 6s;
+}
+
+#title .sprite.berry {
+  animation-delay: 9s;
+}
+
+#title .sprite.meat {
+  animation-delay: 12s;
+}
+
+#title .sprite.worm {
+  animation-delay: 15s;
+}
+
+#title .sprite.brain {
+  animation-delay: 18s;
+}
+
+#title .sprite.bat {
+  animation-delay: 21s;
+}
+
+/* ================= */
+/* ================= */
+/* Rules */
+/* ================= */
+/* ================= */
+#rules {
+  text-align: center;
+}
+
+#rules .p .sprite {
+  transform: scale(2);
+  transform-origin: center;
+  vertical-align: middle;
+  margin: 0 8px;
+}
+
+#rules .p .sprite.cauldron {
+  margin: 0 16px;
+}
+
+#rules .p {
+  line-height: 48px;
+}
+
+/* ================= */
+/* ================= */
+/* Level select */
+/* ================= */
+/* ================= */
+
+#opponentList {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  position: relative;
+  flex-wrap: wrap;
+  align-self: center;
+}
+
+#opponentList::before,
+#opponentList::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(25% - 1.5px);
+  border-top: 3px solid var(--border);
+  z-index: 20;
+}
+
+#opponentList::after {
+  top: unset;
+  bottom: calc(25% - 1.5px);
+}
+
+#opponentList a::before {
+  content: "";
+  display: block;
+  border: 12px solid transparent;
+  position: absolute;
+  bottom: 56px;
+  border-top-width: 16px;
+  border-top-color: var(--primary-dark);
+  animation: upAndDown 333ms linear infinite alternate-reverse;
+}
+
+@keyframes upAndDown {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-8px);
+  }
+}
+
+#opponentList a::after {
+  content: "click!";
+  display: block;
+  text-align: center;
+  color: var(--primary-dark);
+  pointer-events: none;
+  position: absolute;
+  top: 68px;
+  opacity: 0;
+  animation: blink 1s steps(2, jump-none) infinite;
+  animation-delay: 5s;
+}
+
+@keyframes blink {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+#opponentList > * {
+  background-color: var(--light-background);
+  position: relative;
+  z-index: 30;
+  display: flex;
+  width: 64px;
+  height: 64px;
+  margin: 24px 48px;
+  border: 3px solid var(--border);
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+#opponentList > div:not(.prev) {
+  filter: grayscale(1) brightness(0.5);
+}
+
+#opponentList > div:not(.prev) .sprite {
+  filter: contrast(0) brightness(0.5);
+}
+
+#opponentList .sprite {
+  transform: scale(3);
+  transform-origin: center !important;
+}
+
+/* ================= */
+/* ================= */
+/* Battle */
+/* ================= */
+/* ================= */
+
+.scene {
+  flex-grow: 1;
+  position: relative;
+  transform-style: preserve-3d;
+  perspective: 400px;
+  overflow: hidden;
+  --dark-amount: 100%;
+}
+
+.scene:after {
+  content: "";
+  display: block;
+  background: radial-gradient(
+    circle at center 310px,
+    transparent 10%,
+    rgba(0, 0, 0, 0.9) var(--dark-amount)
+  );
+  position: absolute;
+  pointer-events: none;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0px;
+  z-index: 20;
+  transform: translateZ(40px);
+}
+
+.scene .shelf {
+  overflow: visible;
+  position: absolute;
+  pointer-events: none;
+  transform: scale(2);
+  transform-origin: top left;
+  z-index: 0;
+}
+
+.scene .sprite.reversed {
+  transform: scale(-2, 2) translateX(-17px);
+}
+
+.scene .shelf::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 8px;
+  position: absolute;
+  bottom: -8px;
+  border: 1px solid var(--border);
+  background-color: var(--light-background);
+  box-shadow: inset 1px 1px 0 var(--shadow), inset -1px -1px 0 var(--shadow);
+}
+
+.scene .character {
+  transform: scale(4);
+  transform-origin: bottom center;
+  position: absolute;
+  left: 24%;
+  top: 83%;
+}
+
+.character {
+  animation: spriteAnimation 1s steps(2) infinite;
+}
+
+#playerScene {
+  transform: scale(-4, 4);
+}
+
+#opponentScene {
+  left: 75%;
+}
+
+#floorCanvas {
+  position: absolute;
+  bottom: 0;
+  left: -48px;
+  z-index: 0;
+  transform: rotateX(50deg);
+}
+
+.footer {
+  color: var(--primary-light);
+  background-color: var(--secondary-dark);
+  height: 300px;
+  box-sizing: border-box;
+  padding: 8px 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  flex-shrink: 0;
+  position: relative;
+  margin-top: auto;
+}
+
+.footerInner {
+  border-top: 2px solid var(--primary-light);
+  border-bottom: 2px solid var(--primary-light);
+  width: 100%;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 8px;
+  overflow: hidden;
+}
+
+.column {
+  flex-direction: column;
+}
+
+#hand {
+  height: 100%;
+  gap: 8px;
+  justify-content: flex-start;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  margin: auto;
+}
+
+/* ================= */
+/* ================= */
+/* Sprites images */
+/* ================= */
+/* ================= */
+
+.sprite,
+#cauldronScene::after {
+  --x: 0;
+  --y: 0;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-image: url(./images/sprites.png);
+  color: transparent;
+  overflow: hidden;
+  background-position: var(--x) var(--y);
+}
+
+.sprite.spider,
+.ssp::before,
+.isp::before,
+.ps::before,
+.es::before,
+.ssp::after,
+.isp::after,
+.ps::after,
+.es::after {
+  --x: 0;
+  --y: 0;
+}
+
+.sprite.apple,
+.sap::before,
+.iap::before,
+.pa::before,
+.ea::before,
+.sap::after,
+.iap::after,
+.pa::after,
+.ea::after {
+  --x: -16px;
+  --y: 0;
+}
+
+.sprite.bat,
+.sbp::before,
+.ibp::before,
+.pb::before,
+.eb::before,
+.sbp::after,
+.ibp::after,
+.pb::after,
+.eb::after {
+  --x: -32px;
+  --y: 0;
+}
+
+.sprite.worm,
+.swp::before,
+.iwp::before,
+.pw::before,
+.ew::before,
+.swp::after,
+.iwp::after,
+.pw::after,
+.ew::after {
+  --x: -48px;
+  --y: 0;
+}
+
+.sprite.fly,
+.sfp::before,
+.ifp::before,
+.pf::before,
+.ef::before,
+.sfp::after,
+.ifp::after,
+.pf::after,
+.ef::after {
+  --x: 0;
+  --y: -16px;
+}
+
+.sprite.berry,
+.syp::before,
+.iyp::before,
+.py::before,
+.ey::before,
+.syp::after,
+.iyp::after,
+.py::after,
+.ey::after {
+  --x: -16px;
+  --y: -16px;
+}
+
+.sprite.skull,
+.sprite.pw,
+.sprite.pf,
+.sprite.pb,
+.sprite.ps,
+.sprite.pa,
+.sprite.py {
+  --x: -32px;
+  --y: -16px;
+}
+
+.sprite.cauldron {
+  width: 32px;
+  height: 32px;
+  --x: 0;
+  --y: -32px;
+}
+
+.sprite.fatPotion,
+.sprite.swp,
+.sprite.sfp,
+.sprite.sbp,
+.sprite.ssp,
+.sprite.sap,
+.sprite.syp {
+  --x: -48px;
+  --y: -16px;
+}
+
+.sprite.fitPotion,
+.sprite.iwp,
+.sprite.ifp,
+.sprite.ibp,
+.sprite.isp,
+.sprite.iap,
+.sprite.iyp {
+  --x: 0;
+  --y: -64px;
+}
+
+.sprite.books {
+  --x: -16px;
+  --y: -64px;
+}
+
+.sprite.flower {
+  --x: -32px;
+  --y: -64px;
+}
+
+.sprite.meat {
+  --x: -48px;
+  --y: -64px;
+}
+
+.sprite.brain {
+  --x: -32px;
+  --y: -112px;
+}
+
+.sprite.ok,
+.sprite.ew,
+.sprite.ef,
+.sprite.eb,
+.sprite.es,
+.sprite.ea,
+.sprite.ey {
+  --x: -48px;
+  --y: -112px;
+}
+
+.sprite.totter {
+  --x: 0;
+  --y: -96px;
+  --target-x: -32px;
+  --target-y: -96px;
+}
+
+.sprite.old {
+  --x: 0;
+  --y: -80px;
+  --target-x: -32px;
+  --target-y: -80px;
+}
+
+.sprite.haste {
+  --x: -32px;
+  --y: -80px;
+  --target-x: -64px;
+  --target-y: -80px;
+}
+
+.sprite.boast {
+  --x: -32px;
+  --y: -96px;
+  --target-x: -64px;
+  --target-y: -96px;
+}
+
+.sprite.cough {
+  --x: 0;
+  --y: -112px;
+  --target-x: -32px;
+  --target-y: -112px;
+}
+
+@keyframes spriteAnimation {
+  from {
+    background-position: var(--x) var(--y);
+  }
+
+  to {
+    background-position: var(--target-x) var(--target-y);
+  }
+}
+
+/* ================= */
+/* ================= */
+/* Cards */
+/* ================= */
+/* ================= */
+.card {
+  border: 3px solid var(--border);
+  border-radius: var(--radius);
+  background-color: var(--light-background);
+  color: var(--primary-dark);
+  width: 160px;
+  height: 200px;
+  font-family: Impact, fantasy;
+  box-shadow: inset 3px 3px 0 var(--shadow), inset -3px -3px 0 var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.card.big {
+  width: 350px;
+}
+
+.card.mini {
+  border-width: 2px;
+  width: 84px;
+  height: 105px;
+  box-shadow: inset 1px 1px 0 var(--shadow), inset -1px -1px 0 var(--shadow);
+}
+
+.card *,
+a > * {
+  pointer-events: none;
+}
+
+.card .image {
+  margin: 8px 4px;
+  transform: scale(4);
+  transform-origin: top center;
+  overflow: visible;
+  flex-shrink: 0;
+}
+
+.card.big .image::before,
+.card.big .image::after {
+  content: "";
+  position: absolute;
+  width: inherit;
+  height: inherit;
+  background-image: inherit;
+  background-position: var(--x) var(--y);
+  display: block;
+  transform: scale(-0.75, 0.75) translate(20px, 0px) rotate(45deg);
+}
+
+.card.big .image::after {
+  transform: scale(0.75) translate(20px, 0px) rotate(45deg);
+}
+
+.card.mini .image {
+  margin: 4px 2px;
+  transform: scale(2);
+  transform-origin: top center;
+}
+
+.card .name {
+  font-weight: bold;
+  font-size: 28px;
+  margin-top: auto;
+  margin-bottom: 8px;
+}
+
+.card.withPassive .name {
+  font-size: 22px;
+}
+
+.card.mini .name {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.card.mini.withPassive .name {
+  font-size: 12px;
+}
+
+.card .effect {
+  font-size: 20px;
+  margin-bottom: 24px;
+}
+
+.card.mini .effect {
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.card .effect .subEffect.sprite {
+  transform: scale(1.5);
+  transform-origin: left center;
+}
+
+.card.mini .effect .subEffect.sprite {
+  transform: scale(0.75);
+}
+
+.card .effect .sprite {
+  transform: scale(2);
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+.card.mini .effect .sprite {
+  transform: scale(1);
+  margin-right: 0;
+}
+
+.card.big .effect .sprite {
+  margin-right: 8px;
+  margin-left: 8px;
+}
+
+.sprite.poisoned,
+.card.poisoned .image {
+  filter: brightness(2) hue-rotate(300deg);
+}
+
+.sprite.safe,
+.card.safe .image {
+  filter: sepia(1) brightness(2);
+}
+
+.cardList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  padding: 0;
+  margin: 12px;
+  width: 70%;
+}
+
+/* ================= */
+/* ================= */
+/* Cauldron */
+/* ================= */
+/* ================= */
+#cauldronContainer {
+  z-index: 10;
+  transform: scale(4);
+  transform-origin: bottom center;
+  position: absolute;
+  left: calc(50% - 16px);
+  top: calc(50% + 110px);
+  overflow: visible;
+}
+
+#cauldronScene {
+  z-index: 15;
+  color: var(--primary-light);
+  font-weight: bold;
+  text-align: center;
+  line-height: 40px;
+  font-size: 6px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  animation: shaking 0s linear infinite;
+}
+
+#cauldronScene[data-putridity="1"],
+#cauldronScene[data-putridity="12"] {
+  animation-duration: 0.75s;
+}
+
+#cauldronScene[data-putridity="2"],
+#cauldronScene[data-putridity="11"] {
+  animation-duration: 1.25s;
+}
+
+#cauldronScene[data-putridity="3"],
+#cauldronScene[data-putridity="10"] {
+  animation-duration: 2s;
+}
+
+#fire {
+  --x: -32px;
+  --y: -32px;
+  --target-x: -32px;
+  --target-y: -64px;
+  z-index: 20;
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 32px;
+  height: 16px;
+  background-position: var(--x) var(--y);
+  animation: spriteAnimation 0.5s steps(2) infinite;
+}
+
+#cauldronScene .skull {
+  transform: scale(0.5);
+  transform-origin: right center;
+}
+
+#cauldronScene div {
+  position: relative;
+  top: 3px;
+  left: -1px;
+  font-size: 4px;
+}
+
+#cauldronScene #putridityValue {
+  font-size: 8px;
+}
+
+#cauldronContent {
+  position: absolute;
+  width: 0;
+  height: 128px;
+  bottom: 50px;
+  z-index: 20;
+  pointer-events: none;
+  overflow: hidden;
+  transition: width 3s ease-out;
+  display: flex;
+  flex-direction: row;
+  gap: 64px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+#cauldronContent.shown {
+  width: 100%;
+}
+
+#cauldronContent.won {
+  left: 50%;
+}
+
+#cauldronContent.lost {
+  right: 50%;
+  justify-content: flex-start;
+}
+
+#cauldronContent::before,
+#cauldronContent::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-top: 36px solid var(--primary-dark);
+  z-index: 0;
+}
+
+#cauldronContent::before {
+  border-top-style: dashed;
+  border-top-width: 6px;
+  bottom: 36px;
+}
+
+#cauldronContent .sprite {
+  transform: rotate(45deg) scale(3) translateY(8px);
+  flex-shrink: 0;
+}
+
+#cauldronContent.lost .sprite {
+  transform: translateX(12px) rotate(-45deg) scale(3) translateY(8px);
+}
+
+@keyframes shaking {
+  0% {
+    transform: translate(0, 0) rotate(0);
+  }
+  25% {
+    transform: translate(1px, 1px) rotate(0);
+  }
+  50% {
+    transform: translate(0, 0) rotate(0);
+  }
+  75% {
+    transform: translate(-1px, 1px) rotate(0);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0);
+  }
+}
+
+.battleResults {
+  margin: 0;
+  padding: 16px 0;
+  z-index: 30;
+  position: relative;
+  background-color: var(--secondary-dark);
+  color: var(--primary-light);
+  display: none;
+  animation: fromTop 333ms ease-in-out forwards;
+}
+
+@keyframes fromTop {
+  from {
+    transform: translateY(-100px);
+  }
+
+  to {
+    transform: translateY(50px);
+  }
+}
+
+#cauldronContent.won + .battleResults {
+  display: block;
+}
+
+#cauldronContent.lost + .battleResults {
+  display: block;
+  animation: fromTopBroken 333ms ease-in-out forwards;
+}
+
+@keyframes fromTopBroken {
+  0% {
+    transform: translateY(-100px) rotate(0deg);
+  }
+
+  25% {
+    transform: translateY(50px) rotate(0deg);
+  }
+
+  75% {
+    transform: translateY(50px) rotate(0deg);
+  }
+
+  100% {
+    transform: translateY(50px) rotate(2deg);
+  }
+}
+
+.battleResults > .resultsTitle {
+  text-transform: uppercase;
+  font-size: 2rem;
+  text-align: center;
+  display: none;
+  border: 2px solid var(--primary-light);
+  border-width: 2px 0;
+  margin: 0;
+  padding: 16px;
+}
+
+#cauldronContent.won + div > .won,
+#cauldronContent.lost + div > .lost {
+  display: block;
+}
+
+/* ================= */
+/* ================= */
+/* Options */
+/* ================= */
+/* ================= */
+.options {
+  counter-reset: award-index;
+  margin-top: auto;
+}
+
+.options ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  margin: 0;
+  justify-content: center;
+  counter-increment: award-index;
+  position: relative;
+}
+
+.options ul::before {
+  display: block;
+  width: 42px;
+  height: 42px;
+  line-height: 42px;
+  flex-shrink: 0;
+  margin-left: 12px;
+  text-align: center;
+  content: counter(award-index);
+  font-weight: bold;
+  align-self: center;
+  font-size: 2rem;
+  font-family: Impact, fantasy;
+  border: 3px solid var(--border);
+  border-radius: 50%;
+  background-color: var(--light-background);
+  color: var(--primary-dark);
+  box-shadow: inset 3px 3px 0 var(--shadow), inset -3px -3px 0 var(--shadow);
+}
+
+.options .card.big {
+  transform: scale(0.75);
+}
+
+.option .card.mini {
+  margin: 48px 20px;
+  transform: scale(1.35);
+}
+
+.options .option {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  color: var(--primary-dark);
+  border-top: 3px solid var(--border);
+}
+
+.options .option:not(div):hover,
+.options .option:not(div):focus {
+  background-color: var(--lighter-background);
+}
+
+/* ================= */
+/* ================= */
+/* Buttons */
+/* ================= */
+/* ================= */
+
+button,
+a {
+  cursor: pointer;
+  appearance: none;
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  background-color: transparent;
+  border: 0;
+}
+
+.inlineLink {
+  background-color: var(--light-background);
+  color: var(--primary-dark);
+  display: inline-block;
+  padding: 0 4px;
+  font-size: 18px;
+  text-transform: uppercase;
+  border: 3px solid var(--border);
+  font-weight: bold;
+  border-radius: var(--radius);
+}
+
+#characterList a:hover .card,
+#characterList a:focus .card,
+#opponentList a:hover,
+#opponentList a:focus,
+button.card:hover,
+button.card:focus,
+.inlineLink:hover,
+.inlineLink:focus {
+  background-color: var(--lighter-background);
+  transform: translateY(-4px);
+}
