@@ -154,6 +154,8 @@ export function reducer(state = defaultState, { type, payload }) {
         ? [playerDeck, playerHand, playerDiscard]
         : [opponentDeck, opponentHand, opponentDiscard];
 
+      let cardsCount = 1;
+
       if (deck.length === 0) {
         if (hand.length === 0) {
           deck = shuffleArray(discard);
@@ -161,19 +163,28 @@ export function reducer(state = defaultState, { type, payload }) {
 
           if (isPlayer) {
             state.currentBattle.playerDeck = deck;
+            cardsCount = 4;
           } else {
             state.currentBattle.opponentDeck = deck;
+            cardsCount = 2;
           }
         } else {
           return state;
         }
       }
 
-      const drawnCard = deck.shift();
-      hand.splice(index, 0, drawnCard);
+      for (let i = 0; i < cardsCount; i++) {
+        const drawnCard = deck.shift();
 
-      if (isPlayer) {
-        drawCard(drawnCard);
+        if (cardsCount === 1) {
+          hand.splice(index, 0, drawnCard);
+        } else {
+          hand.push(drawnCard);
+        }
+
+        if (isPlayer) {
+          drawCard(drawnCard);
+        }
       }
 
       return state;

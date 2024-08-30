@@ -17,7 +17,7 @@ const character = (name, startPutridity, id, desc, botPassiveIds, deck) => ({
 export const allCharacters = [
   character(
     "Hairy Totter",
-    4,
+    5,
     "totter",
     "I wanna be the very best wizard!",
     ["pw", "swp", "ef"],
@@ -37,8 +37,11 @@ export const allCharacters = [
     4,
     "cough",
     "I... like... flies...",
-    ["pf", "sfp", "sap"],
-    deck([card("fly", 7), card("apple", 3)], "Flies, flies everywhere!")
+    ["sfp", "iap", "ef"],
+    deck(
+      [card("fly", 6), card("bat", 1), card("apple", 3)],
+      "Flies, flies everywhere!"
+    )
   ),
   character(
     "Wizard of the Old",

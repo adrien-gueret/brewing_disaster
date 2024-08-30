@@ -932,7 +932,7 @@
   const allCharacters = [
     character(
       "Hairy Totter",
-      4,
+      5,
       "totter",
       "I wanna be the very best wizard!",
       ["pw", "swp", "ef"],
@@ -952,8 +952,11 @@
       4,
       "cough",
       "I... like... flies...",
-      ["pf", "sfp", "sap"],
-      deck([card("fly", 7), card("apple", 3)], "Flies, flies everywhere!")
+      ["sfp", "iap", "ef"],
+      deck(
+        [card("fly", 6), card("bat", 1), card("apple", 3)],
+        "Flies, flies everywhere!"
+      )
     ),
     character(
       "Wizard of the Old",
@@ -1154,6 +1157,8 @@
           ? [playerDeck, playerHand, playerDiscard]
           : [opponentDeck, opponentHand, opponentDiscard];
 
+        let cardsCount = 1;
+
         if (deck.length === 0) {
           if (hand.length === 0) {
             deck = shuffleArray(discard);
@@ -1161,19 +1166,28 @@
 
             if (isPlayer) {
               state.currentBattle.playerDeck = deck;
+              cardsCount = 4;
             } else {
               state.currentBattle.opponentDeck = deck;
+              cardsCount = 2;
             }
           } else {
             return state;
           }
         }
 
-        const drawnCard = deck.shift();
-        hand.splice(index, 0, drawnCard);
+        for (let i = 0; i < cardsCount; i++) {
+          const drawnCard = deck.shift();
 
-        if (isPlayer) {
-          drawCard(drawnCard);
+          if (cardsCount === 1) {
+            hand.splice(index, 0, drawnCard);
+          } else {
+            hand.push(drawnCard);
+          }
+
+          if (isPlayer) {
+            drawCard(drawnCard);
+          }
         }
 
         return state;
