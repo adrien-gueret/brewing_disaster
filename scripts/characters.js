@@ -20,7 +20,7 @@ export const allCharacters = [
     4,
     "totter",
     "I wanna be the very best wizard!",
-    ["swp", "ew"],
+    ["pw", "swp", "ef"],
     deck(
       [
         card("worm", 3),
@@ -37,7 +37,7 @@ export const allCharacters = [
     4,
     "cough",
     "I... like... flies...",
-    ["sfp", "sap"],
+    ["pf", "sfp", "sap"],
     deck([card("fly", 7), card("apple", 3)], "Flies, flies everywhere!")
   ),
   character(
@@ -45,7 +45,7 @@ export const allCharacters = [
     5,
     "old",
     "I am old and wise...",
-    ["isp", "iwp"],
+    ["pw", "ifp", "iwp"],
     deck(
       [
         card("worm", 2),
@@ -65,7 +65,7 @@ export const allCharacters = [
     6,
     "boast",
     "I have the best ingredients!",
-    ["sbp", "eb"],
+    ["sbp", "ps", "eb"],
     deck(
       [
         card("bat", 4),
@@ -82,7 +82,7 @@ export const allCharacters = [
     9,
     "haste",
     "It's already too putrid!",
-    ["sap", "ey"],
+    ["pa", "sap", "ey"],
     deck(
       [card("apple", 4), card("berry", 4), card("meat", 2)],
       "Only ingredients reducing putridity!"

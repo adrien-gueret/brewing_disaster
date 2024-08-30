@@ -93,6 +93,13 @@
     return newArray;
   }
 
+  function capitalize(word) {
+    return word[0].toUpperCase() + word.slice(1);
+  }
+
+  const poisonedWrapper = (content, poison) =>
+    poison === 0 ? content : `<span class="poisonnedValue">${content}</span>`;
+
   class CardDataBase {
     constructor(id, name, value) {
       this.id = id;
@@ -100,8 +107,9 @@
       this.value = value;
     }
 
-    getDesc() {
-      return `{P} ${this.value >= 0 ? "+" : ""}${this.value}`;
+    getDesc(poison = 0) {
+      const value = this.value + poison;
+      return poisonedWrapper(`{P} ${value >= 0 ? "+" : ""}` + value, poison);
     }
 
     applyEffect(putridity, poison) {
@@ -110,8 +118,8 @@
   }
 
   class CardDataMultipler extends CardDataBase {
-    getDesc() {
-      return `{P} x${this.value}`;
+    getDesc(poison = 0) {
+      return poisonedWrapper(`{P} x${this.value + poison}`, poison);
     }
 
     applyEffect(putridity, poison) {
@@ -120,8 +128,8 @@
   }
 
   class CardDataDiviser extends CardDataBase {
-    getDesc() {
-      return `{P} /${this.value}`;
+    getDesc(poison = 0) {
+      return poisonedWrapper(`{P} /${this.value + poison}`, poison);
     }
 
     applyEffect(putridity, currentPoison) {
@@ -185,11 +193,10 @@
 
       this.id = cardId;
       this.name = cardData.name;
-      this.originalName = cardData.name;
       this.initialValue = cardData.value;
       this.value = cardData.value;
 
-      this.getDesc = cardData.getDesc.bind(this);
+      this.baseCardGetDesc = cardData.getDesc.bind(this);
       this.baseCardEffect = cardData.applyEffect.bind(this);
 
       this.hasActivePassive = false;
@@ -213,6 +220,22 @@
         : newPutridity;
     }
 
+    getName() {
+      const { size, status, name } = this;
+      const sizeModifier = size !== "normal" ? `${capitalize(size)} ` : "";
+      const statusModifier = status !== "none" ? `${capitalize(status)} ` : "";
+      return sizeModifier + statusModifier + name;
+    }
+
+    getDesc(poison = 0) {
+      const statusToModifier = {
+        poisoned: ` ► ${this.initialValue > 0 ? "+1" : "-1"}`,
+        safe: ' <span class="subEffect sprite ok"></span>',
+      };
+
+      return this.baseCardGetDesc(poison) + (statusToModifier[this.status] || "");
+    }
+
     applyPassives(passives) {
       passives
         .filter(({ ingredientId }) => ingredientId === this.id)
@@ -221,23 +244,13 @@
 
           switch (passive.value) {
             case "poisoned": {
-              this.name = "Poisoned " + this.name;
               this.status = "poisoned";
-
-              const originalGetDec = this.getDesc;
-              this.getDesc = () =>
-                originalGetDec() + ` ► ${this.initialValue > 0 ? "+1" : "-1"}`;
 
               break;
             }
 
             case "expert": {
-              this.name = "Safe " + this.name;
               this.status = "safe";
-
-              const originalGetDec = this.getDesc;
-              this.getDesc = () =>
-                originalGetDec() + ` <span class="subEffect sprite ok"></span>`;
 
               break;
             }
@@ -250,10 +263,8 @@
                 (!isMini && this.size === "mini")
               ) {
                 this.size = "normal";
-                this.name = this.originalName;
               } else {
                 this.size = isMini ? "mini" : "maxi";
-                this.name = (isMini ? "Mini " : "Maxi ") + this.name;
               }
 
               this.value += passive.value;
@@ -275,7 +286,7 @@
   ) => ({
     id,
     linkedId,
-    name,
+    getName: () => name,
     ingredientId,
     getDesc: () => desc,
     value,
@@ -418,10 +429,8 @@
     "{Y}": "berry",
   };
 
-  function createCardNode(
-    { id, uniqId, name, getDesc, hasActivePassive, status },
-    element = "div"
-  ) {
+  function createCardNode(uniqCard, element = "div", poison) {
+    const { id, uniqId, hasActivePassive, status } = uniqCard;
     const card = document.createElement(element);
     card.className = "card";
 
@@ -435,11 +444,11 @@
 
     card.classList.add(status);
 
-    const content = getDesc();
+    const content = uniqCard.getDesc(poison);
 
     card.innerHTML = `
         <div class="image sprite ${id}"></div>
-        <div class="name">${name}</div>
+        <div class="name">${uniqCard.getName()}</div>
         <div class="effect">${content.replace(
           new RegExp(Object.keys(codeToClassName).join("|"), "g"),
           (match) => `<span class="sprite ${codeToClassName[match]}"></span>`
@@ -603,6 +612,15 @@
     }
   }
 
+  function applyPoisonToHand(cardsInHand, poison) {
+    hand.innerHTML = "";
+
+    cardsInHand.forEach((uniqCard) => {
+      const cardNode = createCardNode(uniqCard, "button", poison);
+      hand.append(cardNode);
+    });
+  }
+
   async function throwItem(user, card) {
     const fromPlayer = user === "player";
     const fromNode = fromPlayer ? playerScene : opponentScene;
@@ -713,7 +731,7 @@
   function renderUnlockedCharacter(character) {
     const cardNode = createCardNode({
       id: character.id,
-      name: character.name,
+      getName: () => character.name,
       getDesc: () => `<q>${character.desc}</q>`,
     });
 
@@ -727,7 +745,7 @@
     characters.forEach((character) => {
       const cardNode = createCardNode({
         id: character.id,
-        name: character.name,
+        getName: () => character.name,
         getDesc: () =>
           character.isLocked ? character.desc : `<q>${character.desc}</q>`,
       });
@@ -917,7 +935,7 @@
       4,
       "totter",
       "I wanna be the very best wizard!",
-      ["swp", "ew"],
+      ["pw", "swp", "ef"],
       deck(
         [
           card("worm", 3),
@@ -934,7 +952,7 @@
       4,
       "cough",
       "I... like... flies...",
-      ["sfp", "sap"],
+      ["pf", "sfp", "sap"],
       deck([card("fly", 7), card("apple", 3)], "Flies, flies everywhere!")
     ),
     character(
@@ -942,7 +960,7 @@
       5,
       "old",
       "I am old and wise...",
-      ["isp", "iwp"],
+      ["pw", "ifp", "iwp"],
       deck(
         [
           card("worm", 2),
@@ -962,7 +980,7 @@
       6,
       "boast",
       "I have the best ingredients!",
-      ["sbp", "eb"],
+      ["sbp", "ps", "eb"],
       deck(
         [
           card("bat", 4),
@@ -979,7 +997,7 @@
       9,
       "haste",
       "It's already too putrid!",
-      ["sap", "ey"],
+      ["pa", "sap", "ey"],
       deck(
         [card("apple", 4), card("berry", 4), card("meat", 2)],
         "Only ingredients reducing putridity!"
@@ -1255,11 +1273,18 @@
       }
 
       case "setPoison": {
+        const { value, user } = payload;
+        const poison = value === 0 ? 0 : value > 0 ? 1 : -1;
+
+        if (user === "opponent") {
+          applyPoisonToHand(state.currentBattle.playerHand, poison);
+        }
+
         return {
           ...state,
           currentBattle: {
             ...state.currentBattle,
-            poison: payload.value === 0 ? 0 : payload.value > 0 ? 1 : -1,
+            poison,
           },
         };
       }
@@ -1378,18 +1403,18 @@
       payload: { isMuted },
     });
 
-  const applyPoison = (value) =>
+  const applyPoison = (value, user) =>
     dispatch({
       type: "setPoison",
-      payload: { value },
+      payload: { value, user },
     });
 
-  function applyCardEffect(card) {
+  function applyCardEffect(card, user) {
     setPutridity(
       card.applyEffect(
         getPutridity(),
         getState().currentBattle.poison,
-        applyPoison
+        (newPoison) => applyPoison(newPoison, user)
       )
     );
   }
@@ -1411,7 +1436,7 @@
 
     const weightedCards = currentBattle.opponentHand
       .map((card) => {
-        applyCardEffect(card);
+        applyCardEffect(card, "opponent");
 
         const isOKToPlayCard = checkPutridity();
         const nextPutridity = getPutridity();
@@ -2438,13 +2463,16 @@
       itemThrow();
       await throwItem(user, card);
 
-      applyCardEffect(card);
+      applyCardEffect(card, user);
 
       return !checkPutridity();
     }
 
     await init$4({
       async onPlayCard(cardNode) {
+        const cardIndex = Array.from(cardNode.parentNode.children).indexOf(
+          cardNode
+        );
         let hasLost = await playCard$1(Number(cardNode.dataset.uniqId), true);
 
         if (hasLost) {
@@ -2455,10 +2483,7 @@
           return;
         }
 
-        draw(
-          "player",
-          Array.from(cardNode.parentNode.children).indexOf(cardNode)
-        );
+        draw("player", cardIndex);
 
         const opponentCardUniqId = await getNextOpponentCardUniqId();
         hasLost = await playCard$1(opponentCardUniqId);

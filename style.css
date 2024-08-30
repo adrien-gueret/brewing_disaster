@@ -940,7 +940,8 @@ a > * {
 }
 
 .sprite.poisoned,
-.card.poisoned .image {
+.card.poisoned .image,
+.poisonnedValue {
   filter: brightness(2) hue-rotate(300deg);
 }
 

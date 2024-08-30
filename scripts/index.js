@@ -55,13 +55,16 @@ import initSounds, {
     itemThrow();
     await throwItem(user, card);
 
-    applyCardEffect(card);
+    applyCardEffect(card, user);
 
     return !checkPutridity();
   }
 
   await initUI({
     async onPlayCard(cardNode) {
+      const cardIndex = Array.from(cardNode.parentNode.children).indexOf(
+        cardNode
+      );
       let hasLost = await playCard(Number(cardNode.dataset.uniqId), true);
 
       if (hasLost) {
@@ -72,10 +75,7 @@ import initSounds, {
         return;
       }
 
-      draw(
-        "player",
-        Array.from(cardNode.parentNode.children).indexOf(cardNode)
-      );
+      draw("player", cardIndex);
 
       const opponentCardUniqId = await getNextOpponentCardUniqId();
       hasLost = await playCard(opponentCardUniqId);

@@ -1,4 +1,7 @@
-import { shuffleArray } from "./utils.js";
+import { shuffleArray, capitalize } from "./utils.js";
+
+const poisonedWrapper = (content, poison) =>
+  poison === 0 ? content : `<span class="poisonnedValue">${content}</span>`;
 
 class CardDataBase {
   constructor(id, name, value) {
@@ -7,8 +10,9 @@ class CardDataBase {
     this.value = value;
   }
 
-  getDesc() {
-    return `{P} ${this.value >= 0 ? "+" : ""}${this.value}`;
+  getDesc(poison = 0) {
+    const value = this.value + poison;
+    return poisonedWrapper(`{P} ${value >= 0 ? "+" : ""}` + value, poison);
   }
 
   applyEffect(putridity, poison) {
@@ -17,8 +21,8 @@ class CardDataBase {
 }
 
 class CardDataMultipler extends CardDataBase {
-  getDesc() {
-    return `{P} x${this.value}`;
+  getDesc(poison = 0) {
+    return poisonedWrapper(`{P} x${this.value + poison}`, poison);
   }
 
   applyEffect(putridity, poison) {
@@ -27,8 +31,8 @@ class CardDataMultipler extends CardDataBase {
 }
 
 class CardDataDiviser extends CardDataBase {
-  getDesc() {
-    return `{P} /${this.value}`;
+  getDesc(poison = 0) {
+    return poisonedWrapper(`{P} /${this.value + poison}`, poison);
   }
 
   applyEffect(putridity, currentPoison) {
@@ -92,11 +96,10 @@ export class UniqCard {
 
     this.id = cardId;
     this.name = cardData.name;
-    this.originalName = cardData.name;
     this.initialValue = cardData.value;
     this.value = cardData.value;
 
-    this.getDesc = cardData.getDesc.bind(this);
+    this.baseCardGetDesc = cardData.getDesc.bind(this);
     this.baseCardEffect = cardData.applyEffect.bind(this);
 
     this.hasActivePassive = false;
@@ -120,6 +123,22 @@ export class UniqCard {
       : newPutridity;
   }
 
+  getName() {
+    const { size, status, name } = this;
+    const sizeModifier = size !== "normal" ? `${capitalize(size)} ` : "";
+    const statusModifier = status !== "none" ? `${capitalize(status)} ` : "";
+    return sizeModifier + statusModifier + name;
+  }
+
+  getDesc(poison = 0) {
+    const statusToModifier = {
+      poisoned: ` ► ${this.initialValue > 0 ? "+1" : "-1"}`,
+      safe: ' <span class="subEffect sprite ok"></span>',
+    };
+
+    return this.baseCardGetDesc(poison) + (statusToModifier[this.status] || "");
+  }
+
   applyPassives(passives) {
     passives
       .filter(({ ingredientId }) => ingredientId === this.id)
@@ -128,23 +147,13 @@ export class UniqCard {
 
         switch (passive.value) {
           case "poisoned": {
-            this.name = "Poisoned " + this.name;
             this.status = "poisoned";
-
-            const originalGetDec = this.getDesc;
-            this.getDesc = () =>
-              originalGetDec() + ` ► ${this.initialValue > 0 ? "+1" : "-1"}`;
 
             break;
           }
 
           case "expert": {
-            this.name = "Safe " + this.name;
             this.status = "safe";
-
-            const originalGetDec = this.getDesc;
-            this.getDesc = () =>
-              originalGetDec() + ` <span class="subEffect sprite ok"></span>`;
 
             break;
           }
@@ -157,10 +166,8 @@ export class UniqCard {
               (!isMini && this.size === "mini")
             ) {
               this.size = "normal";
-              this.name = this.originalName;
             } else {
               this.size = isMini ? "mini" : "maxi";
-              this.name = (isMini ? "Mini " : "Maxi ") + this.name;
             }
 
             this.value += passive.value;

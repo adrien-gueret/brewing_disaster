@@ -35,10 +35,8 @@ const codeToClassName = {
   "{Y}": "berry",
 };
 
-function createCardNode(
-  { id, uniqId, name, getDesc, hasActivePassive, status },
-  element = "div"
-) {
+function createCardNode(uniqCard, element = "div", poison) {
+  const { id, uniqId, hasActivePassive, status } = uniqCard;
   const card = document.createElement(element);
   card.className = "card";
 
@@ -52,11 +50,11 @@ function createCardNode(
 
   card.classList.add(status);
 
-  const content = getDesc();
+  const content = uniqCard.getDesc(poison);
 
   card.innerHTML = `
         <div class="image sprite ${id}"></div>
-        <div class="name">${name}</div>
+        <div class="name">${uniqCard.getName()}</div>
         <div class="effect">${content.replace(
           new RegExp(Object.keys(codeToClassName).join("|"), "g"),
           (match) => `<span class="sprite ${codeToClassName[match]}"></span>`
@@ -220,6 +218,15 @@ export function drawCard(uniqCard) {
   }
 }
 
+export function applyPoisonToHand(cardsInHand, poison) {
+  hand.innerHTML = "";
+
+  cardsInHand.forEach((uniqCard) => {
+    const cardNode = createCardNode(uniqCard, "button", poison);
+    hand.append(cardNode);
+  });
+}
+
 export async function throwItem(user, card) {
   const fromPlayer = user === "player";
   const fromNode = fromPlayer ? playerScene : opponentScene;
@@ -330,7 +337,7 @@ export async function suggestPassiveAwards(passives, onPassiveClicked) {
 export function renderUnlockedCharacter(character) {
   const cardNode = createCardNode({
     id: character.id,
-    name: character.name,
+    getName: () => character.name,
     getDesc: () => `<q>${character.desc}</q>`,
   });
 
@@ -344,7 +351,7 @@ export function renderCharacterList(characters) {
   characters.forEach((character) => {
     const cardNode = createCardNode({
       id: character.id,
-      name: character.name,
+      getName: () => character.name,
       getDesc: () =>
         character.isLocked ? character.desc : `<q>${character.desc}</q>`,
     });

@@ -5,6 +5,7 @@ import {
   setPlayerSprite,
   renderOpponentList,
   renderPlayerDeck,
+  applyPoisonToHand,
 } from "./ui.js";
 import { UniqCard } from "./cards.js";
 import { getPassiveById } from "./passives.js";
@@ -272,11 +273,18 @@ export function reducer(state = defaultState, { type, payload }) {
     }
 
     case "setPoison": {
+      const { value, user } = payload;
+      const poison = value === 0 ? 0 : value > 0 ? 1 : -1;
+
+      if (user === "opponent") {
+        applyPoisonToHand(state.currentBattle.playerHand, poison);
+      }
+
       return {
         ...state,
         currentBattle: {
           ...state.currentBattle,
-          poison: payload.value === 0 ? 0 : payload.value > 0 ? 1 : -1,
+          poison,
         },
       };
     }
@@ -395,18 +403,18 @@ export const toggleMuteSounds = (isMuted) =>
     payload: { isMuted },
   });
 
-const applyPoison = (value) =>
+const applyPoison = (value, user) =>
   dispatch({
     type: "setPoison",
-    payload: { value },
+    payload: { value, user },
   });
 
-export function applyCardEffect(card) {
+export function applyCardEffect(card, user) {
   setPutridity(
     card.applyEffect(
       getPutridity(),
       getState().currentBattle.poison,
-      applyPoison
+      (newPoison) => applyPoison(newPoison, user)
     )
   );
 }
@@ -428,7 +436,7 @@ export const getNextOpponentCardUniqId = async () => {
 
   const weightedCards = currentBattle.opponentHand
     .map((card) => {
-      applyCardEffect(card);
+      applyCardEffect(card, "opponent");
 
       const isOKToPlayCard = checkPutridity();
       const nextPutridity = getPutridity();

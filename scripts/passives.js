@@ -11,7 +11,7 @@ const generatePassiveData = (
 ) => ({
   id,
   linkedId,
-  name,
+  getName: () => name,
   ingredientId,
   getDesc: () => desc,
   value,

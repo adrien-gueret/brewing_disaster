@@ -106,11 +106,19 @@ import { zip, COMPRESSION_LEVEL } from "zip-a-folder";
 
   const JS13K_LIMIT_SIZE = 13312;
 
+  const percent = Math.round(((size * 100) / JS13K_LIMIT_SIZE) * 100) / 100;
+  const percentOfTotalBudget = "(" + percent + "% of total budget)";
+
   if (size > JS13K_LIMIT_SIZE) {
-    console.error("❌ File is " + (size - JS13K_LIMIT_SIZE) + "bytes too big!");
+    console.error(
+      "❌ File is " +
+        (size - JS13K_LIMIT_SIZE) +
+        "bytes too big! " +
+        percentOfTotalBudget
+    );
   } else {
     const percent = Math.round(((size * 100) / JS13K_LIMIT_SIZE) * 100) / 100;
-    console.log("✅ All good! (" + percent + "% of total budget)");
+    console.log("✅ All good! " + percentOfTotalBudget);
   }
 
   console.log("");
