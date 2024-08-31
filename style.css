@@ -28,9 +28,8 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  padding: 0;
-  margin: 0;
+  padding: 8px;
+  margin: 8px;
   min-width: 768px;
   min-height: 700px;
 }
@@ -91,6 +90,7 @@ main {
   border: 4px solid var(--border);
   background-color: var(--medium-background);
   display: flex;
+  flex-shrink: 0;
   align-items: stretch;
   justify-content: stretch;
   overflow: hidden;
