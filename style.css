@@ -541,7 +541,7 @@ q {
   transform-origin: bottom center;
   position: absolute;
   left: 24%;
-  top: 83%;
+  top: 84%;
 }
 
 .character {
@@ -610,8 +610,7 @@ q {
 /* ================= */
 /* ================= */
 
-.sprite,
-#cauldronScene::after {
+.sprite {
   --x: 0;
   --y: 0;
   display: inline-block;
@@ -967,25 +966,29 @@ a > * {
 /* ================= */
 #cauldronContainer {
   z-index: 10;
-  transform: scale(4);
+  height: 128px;
   transform-origin: bottom center;
   position: absolute;
-  left: calc(50% - 16px);
-  top: calc(50% + 110px);
+  left: calc(50% - 64px);
+  top: calc(50% + 20px);
   overflow: visible;
+  width: 128px;
 }
 
 #cauldronScene {
   z-index: 15;
   color: var(--primary-light);
   font-weight: bold;
-  text-align: center;
   line-height: 40px;
   font-size: 6px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   animation: shaking 0s linear infinite;
+  width: 128px;
+  height: 128px;
+  background-size: 256px;
+  --y: -128px;
 }
 
 #cauldronScene[data-putridity="1"],
@@ -1004,35 +1007,36 @@ a > * {
 }
 
 #fire {
-  --x: -32px;
-  --y: -32px;
-  --target-x: -32px;
-  --target-y: -64px;
+  --x: -128px;
+  --y: -128px;
+  --target-x: -128px;
+  --target-y: -256px;
   z-index: 20;
   content: "";
   position: absolute;
   left: 0;
   bottom: -4px;
-  width: 32px;
-  height: 16px;
+  width: 128px;
+  height: 64px;
+  background-size: 256px;
   background-position: var(--x) var(--y);
   animation: spriteAnimation 0.5s steps(2) infinite;
 }
 
 #cauldronScene .skull {
-  transform: scale(0.5);
   transform-origin: right center;
+  transform: scale(2);
+  margin-left: 40px;
 }
 
 #cauldronScene div {
   position: relative;
-  top: 3px;
-  left: -1px;
-  font-size: 4px;
+  top: 12px;
+  font-size: 16px;
 }
 
 #cauldronScene #putridityValue {
-  font-size: 8px;
+  font-size: 32px;
 }
 
 #cauldronContent {
