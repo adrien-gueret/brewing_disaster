@@ -47,7 +47,7 @@ export function reducer(state = defaultState, { type, payload }) {
       setPlayerSprite(playerCharacterId);
 
       const playerDeckCards = deck.cards.map((id) => new UniqCard(id));
-      renderPlayerDeck(playerDeckCards, deck.desc);
+      renderPlayerDeck(playerDeckCards);
 
       const otherCharactersIds = allCharacters
         .filter(({ id }) => id !== playerCharacterId)

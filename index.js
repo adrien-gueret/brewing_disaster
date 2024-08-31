@@ -407,13 +407,11 @@
   const opponentList = document.getElementById("opponentList");
   const wizardName = document.getElementById("wizardName");
   const nextWizardDesc = document.getElementById("nextWizardDesc");
-  const nextWizardDeckDesc = document.getElementById("nextWizardDeckDesc");
   const nextWizardCards = document.getElementById("nextWizardCards");
   const nextWizardPutridity = document.getElementById("nextWizardPutridity");
   const ruleCardList = document.getElementById("ruleCardList");
   const playerDeck = document.getElementById("playerDeck");
   const battleResultsWon = document.getElementById("battleResultsWon");
-  const playerDeckDesc = document.getElementById("playerDeckDesc");
   const soundsCheckbox = document.getElementById("soundsCheckbox");
   const gameWin = document.getElementById("gameWin");
   const floorCanvas = document.getElementById("floorCanvas");
@@ -429,13 +427,17 @@
     "{Y}": "berry",
   };
 
-  function createCardNode(uniqCard, element = "div", poison) {
+  function createCardNode(uniqCard, element = "div", poison, total) {
     const { id, uniqId, hasActivePassive, status } = uniqCard;
     const card = document.createElement(element);
     card.className = "card";
 
     if (uniqId) {
       card.dataset.uniqId = uniqId;
+    }
+
+    if (total) {
+      card.dataset.total = total;
     }
 
     if (hasActivePassive) {
@@ -781,16 +783,32 @@
     ul.append(fragment);
   }
 
-  function renderPlayerDeck(cards, desc) {
-    if (desc) {
-      playerDeckDesc.innerHTML = desc;
+  function renderPlayerDeck(cards) {
+    renderCardsIntoList(cards, ruleCardList);
+
+    const cardsToShowOnAwardsScreen = cards.reduce((acc, uniqCard) => {
+      if (!acc[uniqCard.id]) {
+        acc[uniqCard.id] = {
+          card: uniqCard,
+          total: 0,
+        };
+      }
+
+      acc[uniqCard.id].total++;
+
+      return acc;
+    }, {});
+
+    playerDeck.innerHTML = "";
+    const fragment = document.createDocumentFragment();
+
+    for (let { card, total } of Object.values(cardsToShowOnAwardsScreen)) {
+      const cardNode = createCardNode(card, "li", 0, total);
+      cardNode.classList.add("mini");
+      fragment.append(cardNode);
     }
 
-    renderCardsIntoList(cards, ruleCardList);
-    renderCardsIntoList(
-      cards.sort((a, b) => a.id.localeCompare(b.id)),
-      playerDeck
-    );
+    playerDeck.append(fragment);
   }
 
   function renderOpponentList(opponentIds, wins, nextOpponent) {
@@ -799,7 +817,6 @@
     wins > 3 ? " <span>(hard)</span>" : ""
   }`;
     nextWizardDesc.innerHTML = nextOpponent.desc;
-    nextWizardDeckDesc.innerHTML = nextOpponent.deck.desc;
     nextWizardPutridity.innerHTML = nextOpponent.startPutridity;
 
     renderCardsIntoList(nextOpponent.deck.cards, nextWizardCards);
@@ -915,9 +932,8 @@
 
   const card = (id, count = 1) => new Array(count).fill(id);
 
-  const deck = (cards, desc) => ({
+  const deck = (cards) => ({
     cards: cards.flat(),
-    desc,
   });
 
   const character = (name, startPutridity, id, desc, botPassiveIds, deck) => ({
@@ -936,16 +952,13 @@
       "totter",
       "I wanna be the very best wizard!",
       ["pw", "swp", "ef"],
-      deck(
-        [
-          card("worm", 3),
-          card("fly", 2),
-          card("bat", 2),
-          card("apple", 2),
-          card("berry"),
-        ],
-        "A well-balanced choices of ingredients."
-      )
+      deck([
+        card("worm", 3),
+        card("fly", 2),
+        card("bat", 2),
+        card("apple", 2),
+        card("berry"),
+      ])
     ),
     character(
       "Wizard of the Cough",
@@ -953,10 +966,7 @@
       "cough",
       "I... like... flies...",
       ["sfp", "iap", "ef"],
-      deck(
-        [card("fly", 6), card("bat", 1), card("apple", 3)],
-        "Flies, flies everywhere!"
-      )
+      deck([card("fly", 6), card("bat", 1), card("apple", 3)])
     ),
     character(
       "Wizard of the Old",
@@ -964,19 +974,16 @@
       "old",
       "I am old and wise...",
       ["pw", "ifp", "iwp"],
-      deck(
-        [
-          card("worm", 2),
-          card("fly"),
-          card("bat"),
-          card("spider"),
-          card("berry"),
-          card("apple", 2),
-          card("brain"),
-          card("meat"),
-        ],
-        "At least one of each ingredients."
-      )
+      deck([
+        card("worm", 2),
+        card("fly"),
+        card("bat"),
+        card("spider"),
+        card("berry"),
+        card("apple", 2),
+        card("brain"),
+        card("meat"),
+      ])
     ),
     character(
       "Wizard of the Boast",
@@ -984,16 +991,13 @@
       "boast",
       "I have the best ingredients!",
       ["sbp", "ps", "eb"],
-      deck(
-        [
-          card("bat", 4),
-          card("berry", 2),
-          card("spider", 2),
-          card("brain"),
-          card("meat"),
-        ],
-        "No worms and no flies!"
-      )
+      deck([
+        card("bat", 4),
+        card("berry", 2),
+        card("spider", 2),
+        card("brain"),
+        card("meat"),
+      ])
     ),
     character(
       "Wizard of the Haste",
@@ -1001,10 +1005,7 @@
       "haste",
       "It's already too putrid!",
       ["pa", "sap", "ey"],
-      deck(
-        [card("apple", 4), card("berry", 4), card("meat", 2)],
-        "Only ingredients reducing putridity!"
-      )
+      deck([card("apple", 4), card("berry", 4), card("meat", 2)])
     ),
   ];
 
@@ -1050,7 +1051,7 @@
         setPlayerSprite(playerCharacterId);
 
         const playerDeckCards = deck.cards.map((id) => new UniqCard(id));
-        renderPlayerDeck(playerDeckCards, deck.desc);
+        renderPlayerDeck(playerDeckCards);
 
         const otherCharactersIds = allCharacters
           .filter(({ id }) => id !== playerCharacterId)

@@ -199,8 +199,45 @@ q {
 
 #playerDeck {
   width: auto;
-  gap: 3px;
+  gap: 8px;
   overflow: auto;
+}
+
+#playerDeck .card {
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  height: 48px;
+}
+
+#playerDeck .card > * {
+  margin: 0;
+  transform-origin: left center;
+}
+
+#playerDeck .card .image {
+  margin: 0 20px 0 4px;
+}
+
+#playerDeck .card .name {
+  font-size: 15px;
+}
+
+#playerDeck .card .effect {
+  margin-left: auto;
+}
+
+#playerDeck .card::after {
+  content: "x" attr(data-total);
+  width: 32px;
+  margin-left: 8px;
+  background: var(--secondary-dark);
+  color: var(--primary-light);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 3px solid var(--border);
 }
 
 .chooseTitle {
@@ -541,7 +578,7 @@ q {
   transform-origin: bottom center;
   position: absolute;
   left: 24%;
-  top: 84%;
+  top: 83%;
 }
 
 .character {
@@ -1043,7 +1080,7 @@ a > * {
   position: absolute;
   width: 0;
   height: 128px;
-  bottom: 50px;
+  bottom: 47px;
   z-index: 20;
   pointer-events: none;
   overflow: hidden;
@@ -1060,11 +1097,11 @@ a > * {
 }
 
 #cauldronContent.won {
-  left: 50%;
+  left: 52%;
 }
 
 #cauldronContent.lost {
-  right: 50%;
+  right: 52%;
   justify-content: flex-start;
 }
 

@@ -13,13 +13,11 @@ const characterList = document.getElementById("characterList");
 const opponentList = document.getElementById("opponentList");
 const wizardName = document.getElementById("wizardName");
 const nextWizardDesc = document.getElementById("nextWizardDesc");
-const nextWizardDeckDesc = document.getElementById("nextWizardDeckDesc");
 const nextWizardCards = document.getElementById("nextWizardCards");
 const nextWizardPutridity = document.getElementById("nextWizardPutridity");
 const ruleCardList = document.getElementById("ruleCardList");
 const playerDeck = document.getElementById("playerDeck");
 const battleResultsWon = document.getElementById("battleResultsWon");
-const playerDeckDesc = document.getElementById("playerDeckDesc");
 const soundsCheckbox = document.getElementById("soundsCheckbox");
 const gameWin = document.getElementById("gameWin");
 const floorCanvas = document.getElementById("floorCanvas");
@@ -35,13 +33,17 @@ const codeToClassName = {
   "{Y}": "berry",
 };
 
-function createCardNode(uniqCard, element = "div", poison) {
+function createCardNode(uniqCard, element = "div", poison, total) {
   const { id, uniqId, hasActivePassive, status } = uniqCard;
   const card = document.createElement(element);
   card.className = "card";
 
   if (uniqId) {
     card.dataset.uniqId = uniqId;
+  }
+
+  if (total) {
+    card.dataset.total = total;
   }
 
   if (hasActivePassive) {
@@ -387,16 +389,32 @@ function renderCardsIntoList(cards, ul) {
   ul.append(fragment);
 }
 
-export function renderPlayerDeck(cards, desc) {
-  if (desc) {
-    playerDeckDesc.innerHTML = desc;
+export function renderPlayerDeck(cards) {
+  renderCardsIntoList(cards, ruleCardList);
+
+  const cardsToShowOnAwardsScreen = cards.reduce((acc, uniqCard) => {
+    if (!acc[uniqCard.id]) {
+      acc[uniqCard.id] = {
+        card: uniqCard,
+        total: 0,
+      };
+    }
+
+    acc[uniqCard.id].total++;
+
+    return acc;
+  }, {});
+
+  playerDeck.innerHTML = "";
+  const fragment = document.createDocumentFragment();
+
+  for (let { card, total } of Object.values(cardsToShowOnAwardsScreen)) {
+    const cardNode = createCardNode(card, "li", 0, total);
+    cardNode.classList.add("mini");
+    fragment.append(cardNode);
   }
 
-  renderCardsIntoList(cards, ruleCardList);
-  renderCardsIntoList(
-    cards.sort((a, b) => a.id.localeCompare(b.id)),
-    playerDeck
-  );
+  playerDeck.append(fragment);
 }
 
 export function renderOpponentList(opponentIds, wins, nextOpponent) {
@@ -405,7 +423,6 @@ export function renderOpponentList(opponentIds, wins, nextOpponent) {
     wins > 3 ? " <span>(hard)</span>" : ""
   }`;
   nextWizardDesc.innerHTML = nextOpponent.desc;
-  nextWizardDeckDesc.innerHTML = nextOpponent.deck.desc;
   nextWizardPutridity.innerHTML = nextOpponent.startPutridity;
 
   renderCardsIntoList(nextOpponent.deck.cards, nextWizardCards);
