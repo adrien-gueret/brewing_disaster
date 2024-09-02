@@ -109,6 +109,7 @@ main > section {
   position: relative;
   display: none;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .sectionTitle {
@@ -123,12 +124,12 @@ main > section {
   font-size: 1.8rem;
   text-align: center;
   margin-bottom: 0;
+}
 
-  span {
-    font-size: 1.2rem;
-    vertical-align: middle;
-    color: var(--primary-dark);
-  }
+.subtitle span {
+  font-size: 1.2rem;
+  vertical-align: middle;
+  color: var(--primary-dark);
 }
 
 .p {
@@ -245,6 +246,7 @@ q {
   align-items: center;
   display: flex;
   justify-content: center;
+  text-align: center;
 }
 
 #chooseBonusDeck .chooseTitle {
@@ -293,6 +295,7 @@ q {
   background: var(--secondary-dark);
   color: var(--primary-light);
   text-align: center;
+  overflow: hidden;
 }
 
 #title .sectionTitle {
@@ -523,9 +526,11 @@ q {
 
 .scene {
   flex-grow: 1;
+  flex-shrink: 0;
   position: relative;
   transform-style: preserve-3d;
   perspective: 400px;
+  height: 392px;
   overflow: hidden;
   --dark-amount: 100%;
 }
@@ -579,6 +584,7 @@ q {
   position: absolute;
   left: 24%;
   top: 83%;
+  z-index: 3;
 }
 
 .character {
@@ -597,7 +603,7 @@ q {
   position: absolute;
   bottom: 0;
   left: -48px;
-  z-index: 0;
+  z-index: 1;
   transform: rotateX(50deg);
 }
 
@@ -1318,4 +1324,218 @@ button.card:focus,
 .inlineLink:focus {
   background-color: var(--lighter-background);
   transform: translateY(-4px);
+}
+
+/* ================= */
+/* ================= */
+/* Responsive */
+/* ================= */
+/* ================= */
+
+@media screen and (orientation: portrait) and ((max-width: 780px) or (max-height: 750px)) {
+  body {
+    padding: 0;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    min-width: auto;
+    min-height: auto;
+  }
+
+  main {
+    border: 0;
+    border-radius: 0;
+    width: 100%;
+    height: 100%;
+    flex-shrink: 1;
+    position: absolute;
+    inset: 0;
+  }
+
+  .sectionTitle {
+    font-size: 1rem;
+  }
+
+  #title .sectionTitle {
+    font-size: 2rem;
+    margin-top: 24px;
+  }
+
+  #title a {
+    font-size: 1rem;
+  }
+
+  #characterList {
+    margin-top: 48px;
+  }
+
+  .card {
+    height: 140px;
+  }
+
+  .characters .card {
+    width: 125px;
+  }
+
+  .card .image {
+    margin: 16px;
+    transform: scale(2);
+  }
+
+  .card .name {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  .card.withPassive .name {
+    font-size: 12px;
+  }
+
+  .card.mini .name {
+    font-size: 10px;
+    margin-bottom: 2px;
+  }
+
+  .card.mini.withPassive .name {
+    font-size: 8px;
+  }
+
+  .card .effect {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  .card .effect .sprite {
+    transform: scale(1);
+    margin-right: 2px;
+  }
+
+  .footer {
+    height: auto;
+  }
+
+  #battle .footer {
+    flex: 1;
+  }
+
+  q {
+    font-size: 12px;
+  }
+
+  #gameOptions {
+    position: absolute;
+    bottom: 0;
+    right: 8px;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 0 8px;
+    border-radius: var(--radius);
+    z-index: 30;
+  }
+
+  #rules,
+  #levelList,
+  #battleResultsWon,
+  #battle {
+    overflow: scroll;
+  }
+
+  .p {
+    margin: 4px;
+  }
+
+  .cardList {
+    width: 100%;
+  }
+
+  #rules .p {
+    line-height: 36px;
+  }
+
+  #rules .p .sprite,
+  #rules .p .sprite.cauldron {
+    transform: scale(1);
+    margin: 0;
+  }
+
+  .subTitle {
+    margin: 4px;
+    font-size: 1.1rem;
+  }
+
+  .subText {
+    font-size: 0.9rem;
+  }
+
+  #opponentList {
+    margin-top: 20px;
+  }
+
+  #opponentList > * {
+    margin: 12px;
+  }
+
+  .scene {
+    flex-grow: 0;
+  }
+
+  #floorCanvas {
+    bottom: -20px;
+  }
+
+  .scene .character {
+    left: 15%;
+  }
+
+  #opponentScene {
+    left: 85%;
+  }
+
+  #hand {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  #hand .card {
+    width: 100px;
+  }
+
+  .chooseTitle {
+    font-size: 1rem;
+    flex-shrink: 1;
+    flex-grow: 0;
+    padding: 16px 0;
+  }
+
+  .options {
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 3px solid var(--border);
+  }
+
+  .options ul {
+    flex-wrap: wrap;
+  }
+
+  .options ul:before {
+    display: none;
+  }
+
+  .option .card.mini {
+    transform: scale(1);
+    margin: 8px 6px;
+  }
+
+  #playerDeck {
+    gap: 4px;
+    margin: 12px 4px;
+  }
+}
+
+@media screen and (max-width: 780px) {
+  #opponentList::before,
+  #opponentList::after {
+    display: none;
+  }
 }
