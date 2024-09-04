@@ -64,6 +64,6 @@ export default function init(onSectionChangeCallback) {
     nextSectionVars = JSON.parse(JSON.stringify(e.target.dataset));
   });
 
-  goToSection("title");
+  goToSection(window.location.hash === "#rules" ? "rules" : "title");
   onHashChange();
 }

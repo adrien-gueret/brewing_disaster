@@ -39,18 +39,41 @@ function getPassives(passiveIds, wins) {
   return wins < 6 ? [passives[0]] : passives;
 }
 
+// customDeckString: ${ingredientId}-${total}_${ingredientId}-${total}
+function getCustomDeckFromString(customDeckString) {
+  return {
+    cards: customDeckString.split("_").flatMap((ingredientData) => {
+      const [ingredientId, total] = ingredientData.split("-");
+
+      return new Array(+total).fill(ingredientId);
+    }),
+  };
+}
+
 export function reducer(state = defaultState, { type, payload }) {
   switch (type) {
     case "startGame": {
-      const { playerCharacterId } = payload;
-      const { deck } = getCharacterById(playerCharacterId);
-      setPlayerSprite(playerCharacterId);
+      const { playerCharacterId, customDeckString } = payload;
+
+      const isCustom = !!customDeckString;
+
+      const deck = isCustom
+        ? getCustomDeckFromString(customDeckString)
+        : getCharacterById(playerCharacterId).deck;
+
+      if (isCustom) {
+        history.replaceState("", "", "./#rules");
+      }
+
+      const characterIdToUser = isCustom ? "totter" : playerCharacterId;
+
+      setPlayerSprite(characterIdToUser);
 
       const playerDeckCards = deck.cards.map((id) => new UniqCard(id));
       renderPlayerDeck(playerDeckCards);
 
       const otherCharactersIds = allCharacters
-        .filter(({ id }) => id !== playerCharacterId)
+        .filter(({ id }) => id !== characterIdToUser && id !== "custom")
         .map(({ id }) => id);
 
       const opponentIds = [
@@ -317,10 +340,10 @@ export const draw = (user, index) =>
     payload: { user, index },
   });
 
-export const startGame = (playerCharacterId) =>
+export const startGame = (playerCharacterId, customDeckString) =>
   dispatch({
     type: "startGame",
-    payload: { playerCharacterId },
+    payload: { playerCharacterId, customDeckString },
   });
 
 export const startBattle = () =>

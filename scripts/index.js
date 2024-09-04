@@ -71,7 +71,14 @@ import initSounds, {
         dropPotion();
         battleLost();
         await dropCauldron(false, getBattleHistory());
-        goToSection("newGame");
+
+        if (!isCharacterUnlocked("custom")) {
+          unlockCharacter("custom");
+          goToSection("firstGameLost");
+        } else {
+          goToSection("newGame");
+        }
+
         return;
       }
 
@@ -116,18 +123,24 @@ import initSounds, {
             return {
               ...character,
               name: "Locked",
-              desc: "Play to unlock this character!",
+              desc: `${
+                character.id === "custom" ? "Loose a game" : "Play"
+              } to unlock this character!`,
               isLocked: true,
             };
           })
         );
         break;
 
-      case "rules":
-        if (vars.characterId) {
-          startGame(vars.characterId);
+      case "rules": {
+        const urlParams = new URLSearchParams(window.location.search);
+        const customDeckString = urlParams.get("d");
+
+        if (vars.characterId || customDeckString) {
+          startGame(vars.characterId, customDeckString);
         }
         break;
+      }
 
       case "gameWin": {
         if (areAllCharactersUnlocked()) {

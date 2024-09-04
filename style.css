@@ -260,17 +260,17 @@ q {
 /* ================= */
 /* ================= */
 
-#gameWin {
+.gameEnd {
   font-size: 1.3rem;
   text-align: center;
   padding: 32px;
 }
 
-#gameWin .inlineLink {
+.gameEnd .inlineLink {
   padding: 12px;
 }
 
-#gameWin .card {
+.gameEnd .card {
   margin: 20px auto;
 }
 
@@ -847,6 +847,15 @@ q {
   --y: -112px;
   --target-x: -32px;
   --target-y: -112px;
+}
+
+.sprite.custom {
+  background: none;
+}
+
+.sprite.custom::after {
+  content: "?";
+  color: var(--primary-dark);
 }
 
 @keyframes spriteAnimation {

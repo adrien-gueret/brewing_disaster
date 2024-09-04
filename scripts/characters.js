@@ -75,6 +75,12 @@ export const allCharacters = [
     ["pa", "sap", "ey"],
     deck([card("apple", 4), card("berry", 4), card("meat", 2)])
   ),
+  character(
+    "Wizard of the Custom",
+    0,
+    "custom",
+    "Choose your starter ingredients!"
+  ),
 ];
 
 export const getCharacterById = (charId) =>
