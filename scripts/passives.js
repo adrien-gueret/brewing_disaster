@@ -18,8 +18,8 @@ const generatePassiveData = (
   level,
 });
 
-const generateIngredientMetadata = (name, plural, letter, sign) => ({
-  id: name.toLowerCase(),
+const generateIngredientMetadata = (name, plural, id, letter, sign) => ({
+  id,
   name,
   plural,
   letter,
@@ -27,12 +27,12 @@ const generateIngredientMetadata = (name, plural, letter, sign) => ({
 });
 
 const allEffectData = [
-  generateIngredientMetadata("Worm", "Worms", "w", 1),
-  generateIngredientMetadata("Fly", "Flies", "f", 1),
-  generateIngredientMetadata("Bat", "Bats", "b", 1),
-  generateIngredientMetadata("Spider", "Spiders", "s", 1),
-  generateIngredientMetadata("Apple", "Apples", "a", -1),
-  generateIngredientMetadata("Berry", "Berries", "y", -1),
+  generateIngredientMetadata("Worm", "Worms", "worm", "w", 1),
+  generateIngredientMetadata("Fly", "Flies", "fly", "f", 1),
+  generateIngredientMetadata("Bat", "Bats", "bat", "b", 1),
+  generateIngredientMetadata("Spider", "Spiders", "spider", "s", 1),
+  generateIngredientMetadata("Apple", "Apples", "apple", "a", -1),
+  generateIngredientMetadata("Berry", "Berries", "berry", "y", -1),
 ].flatMap(({ id, name, plural, letter, sign }) => {
   const code = `{${letter.toUpperCase()}}`;
   return [
