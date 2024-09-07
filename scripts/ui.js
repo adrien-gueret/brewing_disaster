@@ -166,7 +166,7 @@ export function updateCauldronPutridity(putridity) {
 }
 
 export function showWinSection(sectionName) {
-  gameWin.className = sectionName;
+  gameWin.className = "gameEnd " + sectionName;
 }
 
 export function setPlayerSprite(charId) {
