@@ -1423,7 +1423,7 @@ button.card:focus,
     height: auto;
   }
 
-  #battle .footer {
+  #battleGame .footer {
     flex: 1;
   }
 
@@ -1444,7 +1444,7 @@ button.card:focus,
   #rules,
   #levelList,
   #battleResultsWon,
-  #battle {
+  #battleGame {
     overflow: scroll;
   }
 

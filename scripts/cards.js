@@ -40,7 +40,7 @@ class CardDataDiviser extends CardDataBase {
   }
 }
 
-const allCardDataBase = [
+export const allCardDataBase = [
   new CardDataBase("worm", "Worm", 1),
   new CardDataBase("fly", "Fly", 2),
   new CardDataBase("bat", "Bat", 3),

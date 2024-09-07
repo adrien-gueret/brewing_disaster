@@ -21,7 +21,7 @@ const battleResultsWon = document.getElementById("battleResultsWon");
 const soundsCheckbox = document.getElementById("soundsCheckbox");
 const gameWin = document.getElementById("gameWin");
 const floorCanvas = document.getElementById("floorCanvas");
-const floorCanvasCtx = floorCanvas.getContext("2d");
+const floorCanvasCtx = floorCanvas?.getContext("2d");
 
 const codeToClassName = {
   "{P}": "skull",
@@ -33,7 +33,7 @@ const codeToClassName = {
   "{Y}": "berry",
 };
 
-function createCardNode(uniqCard, element = "div", poison, total) {
+export function createCardNode(uniqCard, element = "div", poison, total) {
   const { id, uniqId, hasActivePassive, status } = uniqCard;
   const card = document.createElement(element);
   card.className = "card";
@@ -366,9 +366,22 @@ export function renderCharacterList(characters) {
       nodeToInsert.append(cardNode);
     } else {
       nodeToInsert = document.createElement("a");
-      nodeToInsert.href = "#rules";
-      nodeToInsert.dataset.characterId = character.id;
-      nodeToInsert.append(cardNode);
+      if (character.id === "custom") {
+        const origin =
+          window.location.origin !== "https://adrien-gueret.github.io" &&
+          window.location.origin !== "https://192.168.1.38:5500"
+            ? "https://adrien-gueret.github.io/brewing_disaster"
+            : "";
+        nodeToInsert.href = origin + "/your_characters.html";
+
+        nodeToInsert.target = "_blank";
+        nodeToInsert.rel = "opener";
+        nodeToInsert.append(cardNode);
+      } else {
+        nodeToInsert.href = "#rules";
+        nodeToInsert.dataset.characterId = character.id;
+        nodeToInsert.append(cardNode);
+      }
     }
 
     characterList.append(nodeToInsert);
@@ -435,7 +448,7 @@ export function renderOpponentList(opponentIds, wins, nextOpponent) {
     const container = document.createElement(isNext ? "a" : "div");
 
     if (isNext) {
-      container.href = "#battle";
+      container.href = "#battleGame";
     }
 
     if (isPrevious) {

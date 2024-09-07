@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Brewing Disaster - Your characters</title>
+    <link href="./style.css" rel="stylesheet" />
+    <style>
+      .input {
+        padding: 16px;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        background: var(--lighter-background);
+        width: 360px;
+        font-size: 18px;
+        text-align: center;
+        font-weight: bold;
+      }
+
+      .inlineLink {
+        font-family: monospace;
+      }
+
+      .warning {
+        margin: 8px;
+        padding: 12px;
+        border: 3px solid var(--border);
+        background: var(--secondary-dark);
+        color: var(--primary-light);
+      }
+
+      #privateKeyError {
+        color: var(--primary-dark);
+        font-size: 1rem;
+        font-weight: bold;
+        display: none;
+      }
+
+      #list {
+        overflow: auto;
+      }
+
+      .sprite.create {
+        background: none;
+      }
+
+      .sprite.create::after {
+        content: "+";
+        color: var(--primary-dark);
+      }
+
+      #create {
+        padding: 18px 0 0;
+        text-align: center;
+      }
+
+      #characterName {
+        margin-bottom: 8px;
+      }
+
+      #cardSelection {
+        width: 50%;
+        margin: auto;
+      }
+
+      #cardCountContainer {
+        position: absolute;
+        right: 8px;
+        top: 8px;
+        font-size: 1.5rem;
+      }
+
+      [inert] button,
+      button[inert] {
+        filter: grayscale(1);
+      }
+
+      #saving .cauldron {
+        z-index: 5;
+        transform: scale(8);
+        transform-origin: bottom center;
+        position: absolute;
+        bottom: -24px;
+        left: calc(50% - 16px);
+      }
+
+      #saving .sectionTitle {
+        font-size: 3rem;
+        margin-top: 25%;
+      }
+
+      .card .effect a,
+      .card .effect button {
+        pointer-events: all;
+        padding: 4px;
+        margin: 8px;
+      }
+
+      .characters .card {
+        min-height: 200px;
+        height: auto !important;
+      }
+
+      #characterList > a {
+        margin: auto 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <main id="game">
+      <section id="askPrivateKey" class="gameEnd">
+        <form id="askPrivateKeyForm">
+          <h2 class="sectionTitle">Your characters</h2>
+          <p class="p">
+            In order to save and access your characters, you need to provide a
+            private
+            <em>Brewing Disaster</em> key.
+          </p>
+          <p>
+            <input
+              autofocus
+              id="privateKeyInput"
+              class="input"
+              placeholder="Your private Brewing Disaster key"
+              type="text"
+              name="privateKey"
+              required
+            />
+            <br />
+            <span id="privateKeyError">Private key not found.</span>
+          </p>
+          <div class="buttonContainer">
+            <button class="inlineLink" type="submit">Submit</button>
+            <p class="p">
+              <strong>Don't have a private key yet?</strong>
+            </p>
+            <a href="#newPrivateKey" class="inlineLink"> Generate a new key </a>
+            <button
+              type="button"
+              style="margin-top: 12px"
+              class="inlineLink"
+              id="cancelButton"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section id="newPrivateKey" class="gameEnd">
+        <form>
+          <h2 class="sectionTitle">Your characters</h2>
+          <p class="p">Below is your private <em>Brewing Disaster</em> key.</p>
+          <p>
+            <input
+              class="input"
+              id="privateKeyShow"
+              readonly
+              type="text"
+              onClick="this.select();"
+            />
+          </p>
+          <p class="p warning">
+            This key won't be shown anymore: please save it somewhere!<br />
+            This is a private key, keep it for yourself and don't share it!
+          </p>
+          <p class="p">
+            <a href="#list" class="inlineLink">OK</a>
+          </p>
+        </form>
+      </section>
+
+      <section id="list" class="gameEnd">
+        <h2 class="sectionTitle">Your characters</h2>
+        <div id="characterList" class="characters"></div>
+      </section>
+
+      <section id="create">
+        <form id="formCreate">
+          <input
+            autofocus
+            id="characterName"
+            class="input"
+            placeholder="Your character name"
+            type="text"
+            name="characterName"
+            required
+          />
+
+          <input type="hidden" name="cards" id="cardsInput" />
+
+          <p class="p">Click on ingredients you want to add:</p>
+
+          <div id="cardSelection" class="cardList"></div>
+
+          <a class="inlineLink" href="#list" style="margin: 8px"> Cancel </a>
+
+          <button
+            id="saveButton"
+            class="inlineLink"
+            type="submit"
+            style="margin: 8px"
+          >
+            Save
+          </button>
+        </form>
+
+        <div class="footer">
+          <div id="cardCountContainer"><span id="cardCount">0</span>/10</div>
+          <div class="footerInner column">
+            <p style="margin: 0">
+              <b
+                >Your starter ingredients:
+                <i>(click on the ones you want to remove)</i></b
+              >
+            </p>
+            <div id="deckList" class="cardList"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="saving" class="gameEnd">
+        <h2 class="sectionTitle">Saving...</h2>
+        <div class="sprite cauldron"></div>
+      </section>
+    </main>
+
+    <script src="./web3.js"></script>
+  </body>
+</html>

@@ -10,6 +10,10 @@ let onSectionChange = () => {};
 function renderSection(sectionName) {
   const newSection = isValidSection(sectionName) ? sectionName : "title";
 
+  if (newSection === document.body.dataset.currentSection) {
+    return;
+  }
+
   if (document.body.dataset.currentSection) {
     document.body.dataset.prevSection = document.body.dataset.currentSection;
   }
@@ -50,7 +54,7 @@ export default function init(onSectionChangeCallback) {
     `<style>${sectionSelectors.join(",") + "{display:flex;}"}</style>`
   );
 
-  function onHashChange(e = {}) {
+  function onHashChange() {
     renderSection(window.location.hash.substring(1));
   }
 
@@ -65,5 +69,6 @@ export default function init(onSectionChangeCallback) {
   });
 
   goToSection(window.location.hash === "#rules" ? "rules" : "title");
+
   onHashChange();
 }

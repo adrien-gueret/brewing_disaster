@@ -103,7 +103,7 @@ import initSounds, {
   initState();
 
   initSections(({ currentSection, nextSection, vars }) => {
-    if (currentSection === "battle") {
+    if (currentSection === "battleGame") {
       desactivateSceneLight();
     } else if (currentSection === "title" && nextSection !== "title") {
       initSounds(areSoundMuted());
@@ -162,7 +162,7 @@ import initSounds, {
         break;
       }
 
-      case "battle":
+      case "battleGame":
         if (currentSection !== "levelList") {
           return false;
         }
@@ -180,7 +180,7 @@ import initSounds, {
         break;
 
       case "battleResultsWon": {
-        if (currentSection !== "battle") {
+        if (currentSection !== "battleGame") {
           return false;
         }
         const wins = getWins();

@@ -1,244 +1,223 @@
-import { createThirdwebClient } from "thirdweb";
-import { upload, download } from "thirdweb/storage";
+import initSections, { goToSection } from "../sections";
+import { allCardDataBase, UniqCard } from "../cards";
 
-const client = createThirdwebClient({
-  clientId: "e6055df8ecbdb81d15de36c429b52ce8",
-});
+import initClient from "./thirdWebClient";
+import initPrivateKey, {
+  generateNewPrivateKey,
+  setPrivateKey,
+  getPublicKey,
+} from "./keys";
+import { checkFile, setFile, getDeckContent, saveFile } from "./mu";
+import initUI, {
+  showPrivateKey,
+  showPrivateKeyError,
+  hidePrivateKeyError,
+  renderCharacterList,
+  setCardsInputValue,
+  renderDeckIngredients,
+  setCharacterName,
+} from "./ui";
 
-console.log(client);
+const hasOpener = Boolean(window.opener);
 
-const uri = "ipfs://QmNxvA5bwvPGgMXbmtyhxA1cKFdvQXnsGnZLCGor3AzYxJ/hello.txt";
+const rootURL = hasOpener
+  ? "https://js13kgames.com/games/brewing-disaster/index.html"
+  : window.location.origin;
 
 (async () => {
-  /*
-  const uris = await upload({
-    client,
-    files: [new File(["hello world"], "hello.txt")],
-  });
-
-  console.log(uris);
-  */
-
-  const file = await download({
-    client,
-    uri,
-  });
-
-  console.log(await file.text());
-})();
-
-let privateKey = localStorage.getItem("brewing-disaster-private-key");
-
-/*
-function setPrivateKey(newKey) {
-  privateKey = newKey;
-  localStorage.setItem("brewing-disaster-private-key", newKey);
-  privateKeyShow.value = newKey;
-}
-
-async function hash(text) {
-  const res = await crypto.subtle.digest(
-    "SHA-256",
-    new TextEncoder("utf-8").encode(text)
-  );
-  return [...new Uint8Array(res)]
-    .map((x) => x.toString(16).padStart(2, "0"))
-    .join("");
-}
-
-async function getPublicKey() {
-  if (!privateKey) {
-    return null;
-  }
-
-  return hash(privateKey);
-}
-
-async function requestThirdWeb(
-  endPoint,
-  requestOptions = {},
-  requestHeaders = {},
-  expectJSON = true
-) {
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      authorization:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiJkNWJhZWIwNy0yNjczLTQzNDYtYTFiMS02MmNjODhiOTA0Y2QiLCJlbWFpbCI6ImFkcmllbi5ncnRAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInBpbl9wb2xpY3kiOnsicmVnaW9ucyI6W3siaWQiOiJGUkExIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9LHsiaWQiOiJOWUMxIiwiZGVzaXJlZFJlcGxpY2F0aW9uQ291bnQiOjF9XSwidmVyc2lvbiI6MX0sIm1mYV9lbmFibGVkIjpmYWxzZSwic3RhdHVzIjoiQUNUSVZFIn0sImF1dGhlbnRpY2F0aW9uVHlwZSI6InNjb3BlZEtleSIsInNjb3BlZEtleUtleSI6IjU3YjdlZjEzMjdlNGZkZTQ3M2VkIiwic2NvcGVkS2V5U2VjcmV0IjoiNTRlMzQ1ZGM3NzRiYmRlZWU2NjcxOTI4OGQwZjQwNzQ2YzFjMDUwMDc3ZjViYWVlZjkyMjA3NWZkNTI2NWZhYiIsImlhdCI6MTY5Mzk1MTk1Nn0.tAemHsE6EWZXpmzk-7pCGPH5uRzchmgiUoIJzaw9Y7E",
-      ...requestHeaders,
-    },
-    ...requestOptions,
-  };
-
-  const response = await fetch("https://api.pinata.cloud" + endPoint, options);
-  return expectJSON ? response.json() : response.text();
-}
-
-async function listFiles() {
-  const publicKey = await getPublicKey();
-  const files = await requestPinata(
-    "/data/pinList?status=pinned&metadata[name]=Number Knight&metadata[keyvalues][authorPublicKey]=" +
-      JSON.stringify({
-        value: publicKey,
-        op: "eq",
-      })
+  initClient(
+    "l1SCueVB2ZCvJm-c-x2JnWdCygpjiSq3MZa3QPCm2tfQokZe0pH8W-ntr_nDLXzkiz6Ak7NqshYAxW_7o7IrJw"
   );
 
-  return files;
-}
+  const privateKey = await initPrivateKey();
 
-function deleteFile(fileId) {
-  return requestPinata(
-    "/pinning/unpin/" + fileId,
-    {
-      method: "DELETE",
-    },
-    {},
-    false
-  );
-}
+  async function checkPrivateKey(onCheckFail: () => void) {
+    const publicKey = await getPublicKey();
+    const isOK = await checkFile(publicKey);
 
-async function saveOnPinata(levelName, levelCode) {
-  if (!levelCode) {
-    throw new Error("No level code");
+    if (isOK) {
+      goToSection("list");
+    } else {
+      setPrivateKey("");
+      onCheckFail();
+    }
   }
-  const file = new File([levelCode], "number-knight-levels.txt", {
-    type: "text/plain",
-  });
 
-  const formData = new FormData();
+  let editedName: string;
+  let editedCards: string;
 
-  formData.append("file", file);
+  const isEdit = () => Boolean(editedName) && Boolean(editedCards);
 
-  const authorPublicKey = await getPublicKey();
+  initUI({
+    allIngredients: allCardDataBase.map(({ id }) => new UniqCard(id)),
+    async onPrivateKeyEnter(key) {
+      hidePrivateKeyError();
 
-  const metadata = JSON.stringify({
-    name: "Number Knight - " + levelName,
-    keyvalues: {
-      authorPublicKey,
-      levelCode,
-      levelName,
+      await setPrivateKey(key);
+
+      checkPrivateKey(() => showPrivateKeyError());
     },
-  });
-  formData.append("pinataMetadata", metadata);
-
-  const options = JSON.stringify({
-    cidVersion: 0,
-    wrapWithDirectory: false,
-  });
-  formData.append("pinataOptions", options);
-
-  const response = await requestPinata("/pinning/pinFileToIPFS", {
-    method: "POST",
-    body: formData,
-  });
-
-  return response;
-}
-
-const cancelAction = () => {
-  if (window.opener) {
-    window.close();
-  } else {
-    window.location.href = "./";
-  }
-};
-
-cancelButton.onclick = cancelAction;
-
-async function showLevelList() {
-  levelList.innerHTML = "";
-  window.location.hash = "";
-  const levels = await listFiles();
-
-  if (levels.count === 0) {
-    yourLevelList.classList.add("no-level");
-  } else {
-    totalSaved.innerHTML = `You have saved <b>${levels.count}</b> level${
-      levels.count > 1 ? "s" : ""
-    }.<br /><small><em>It may take some times to update this list, if something feels wrong try to refresh it!</em></small>`;
-    const menuFragment = document.createDocumentFragment();
-
-    const allLevelCodes = [];
-
-    const rootURL = window.opener
-      ? "https://js13kgames.com/games/number-knight/index.html"
-      : window.location.origin;
-
-    levels.rows.forEach((level, i) => {
-      if (!level.metadata.keyvalues.levelCode) {
-        return;
+    onCancel() {
+      if (hasOpener) {
+        window.close();
+      } else {
+        window.location.href = rootURL;
       }
-      const link = document.createElement("button");
-      link.type = "button";
-      const small = document.createElement("small");
-      small.textContent = level.metadata.keyvalues.levelName;
-      link.append(small);
-      link.className = "button";
+    },
+    onIngredientAdded(newIngredientIds) {
+      renderDeckIngredients(newIngredientIds.map((id) => new UniqCard(id)));
+    },
+    async onDeckSaved(name, cardData) {
+      let fileContent = getDeckContent().split("\n").filter(Boolean);
 
-      link.onclick = (e) => {
-        e.preventDefault();
-        levelDetailsName.textContent = level.metadata.keyvalues.levelName;
+      const newLine = `${name}|${cardData}`;
 
-        const levelURL = `${rootURL}?p=${level.metadata.keyvalues.levelCode}`;
-        levelDetailsPlayLink.href = levelURL;
-        levelDetailsCode.value = levelURL;
+      if (isEdit()) {
+        const editedLine = `${editedName}|${editedCards}`;
 
-        levelDetailsDelete.onclick = async (e) => {
-          e.preventDefault();
-          await deleteFile(level.ipfs_pin_hash);
+        fileContent = fileContent.map((line) => {
+          if (line !== editedLine) {
+            return line;
+          }
 
-          window.setTimeout(async () => {
-            await showLevelList();
-            levelDetailsDialog.close();
-          }, 300);
-        };
+          return newLine;
+        });
+      } else {
+        fileContent.push(newLine);
+      }
 
-        levelDetailsDialog.showModal();
-      };
+      goToSection("saving");
 
-      allLevelCodes.unshift(level.metadata.keyvalues.levelCode);
+      await saveFile(fileContent);
 
-      menuFragment.append(link);
-    });
+      goToSection("list");
+    },
+  });
 
-    allLevelsLink.value = `${rootURL}?p=${allLevelCodes.join("&p=")}`;
-    levelList.append(menuFragment);
-    yourLevelList.classList.remove("no-level");
-  }
+  initSections(({ nextSection, vars }) => {
+    switch (nextSection) {
+      case "newPrivateKey":
+        generateNewPrivateKey().then(async (privateKey) => {
+          const publicKey = await getPublicKey();
+          try {
+            await setFile(publicKey, "");
+            showPrivateKey(privateKey);
+          } catch (e) {
+            setPrivateKey("");
+            throw e;
+          }
+        });
+        break;
 
-  yourLevelList.showModal();
-}
+      case "list": {
+        const userDeckContent = getDeckContent();
 
-function goToSaveOrLevelList() {
-  if (wantToSaveLevel) {
-    saveLevelDialog.showModal();
+        const customCharactersData = Boolean(userDeckContent)
+          ? userDeckContent.split("\n")
+          : [];
+
+        const characters = customCharactersData.map((characterData) => {
+          const [name, cards] = characterData.split("|");
+
+          const editLink = document.createElement("a");
+          editLink.href = "#create";
+          editLink.className = "inlineLink";
+          editLink.dataset.name = name;
+          editLink.dataset.cards = cards;
+          editLink.innerHTML = "Edit";
+
+          const playLink = document.createElement("button");
+          playLink.type = "button";
+          playLink.className = "inlineLink";
+          playLink.dataset.cards = cards;
+          playLink.dataset.action = "play";
+          playLink.innerHTML = "Play";
+
+          const deleteLink = document.createElement("button");
+          deleteLink.type = "button";
+          deleteLink.className = "inlineLink";
+          deleteLink.dataset.name = name;
+          deleteLink.dataset.cards = cards;
+          deleteLink.dataset.action = "delete";
+          deleteLink.innerHTML = "Delete";
+
+          return {
+            id: "totter",
+            name: name.replaceAll("<", "&lt;").replaceAll(">", "&gt;"),
+            desc: `${deleteLink.outerHTML} ${editLink.outerHTML} ${playLink.outerHTML}`,
+          };
+        });
+
+        renderCharacterList([
+          {
+            id: "create",
+            name: "Create character",
+            desc: "And choose its starter ingredients",
+            href: "#create",
+          },
+          ...characters,
+        ]);
+
+        break;
+      }
+
+      case "create": {
+        editedName = vars.name || "";
+        editedCards = vars.cards || "";
+
+        setCardsInputValue(editedCards);
+        setCharacterName(editedName);
+        break;
+      }
+    }
+  });
+
+  document.body.addEventListener("click", async (e) => {
+    const clickedElement = e.target as HTMLElement;
+    const { dataset } = clickedElement;
+
+    switch (dataset.action) {
+      case "play": {
+        if (hasOpener) {
+          window.opener.history.pushState(
+            null,
+            null,
+            `index.html?d=${dataset.cards}#rules`
+          );
+          window.opener.dispatchEvent(new HashChangeEvent("hashchange"));
+          window.opener.focus();
+          window.close();
+        } else {
+          window.location.href = `${rootURL}/index.html?d=${dataset.cards}#rules`;
+        }
+      }
+
+      case "delete": {
+        const cardToRemove = clickedElement.closest(".card") as HTMLDivElement;
+
+        document.body.inert = true;
+        cardToRemove.style.opacity = "0.5";
+
+        try {
+          const lineToDelete = `${dataset.name}|${dataset.cards}`;
+          const fileContent = getDeckContent()
+            .split("\n")
+            .filter((line) => Boolean(line) && line !== lineToDelete);
+
+          await saveFile(fileContent);
+
+          cardToRemove.remove();
+        } finally {
+          cardToRemove.style.opacity = "1";
+          document.body.inert = false;
+        }
+      }
+    }
+  });
+
+  if (!privateKey) {
+    goToSection("askPrivateKey");
   } else {
-    showLevelList();
+    checkPrivateKey(() => goToSection("askPrivateKey"));
   }
-}
-
-//reloadLevelsButton.onclick = showLevelList;
-
-generateKeyButton.onclick = () => {
-  setPrivateKey(crypto.randomUUID());
-  privateKeyDialog.close();
-  showPrivateKeyDialog.showModal();
-};
-
-privateKeyDialog.onclose = (e) => {
-  if (e.target.returnValue === "submit") {
-    setPrivateKey(privateKeyInput.value);
-    goToSaveOrLevelList();
-  }
-};
-
-showPrivateKeyDialog.onclose = goToSaveOrLevelList;
-
-if (!privateKey) {
-  privateKeyDialog.showModal();
-} else {
-  goToSaveOrLevelList();
-}
-*/
+})();

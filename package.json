@@ -2,9 +2,18 @@
   "dependencies": {
     "minify": "^9.2.0",
     "roadroller": "^2.1.0",
+    "thirdweb": "^5.50.0",
     "zip-a-folder": "^1.1.7"
   },
   "scripts": {
-    "build": "rollup ./scripts/index.js --file index.js --format iife && node build.mjs"
+    "build:entry": "rollup ./scripts/index.js --file index.js --format iife && node build.mjs",
+    "build:web3": "npx tsc && rollup -c rollup.config.mjs"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^26.0.1",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-replace": "^5.0.7",
+    "rollup-plugin-terser": "^7.0.2",
+    "typescript": "^5.5.4"
   }
 }
