@@ -54,14 +54,10 @@ export function createCardNode(uniqCard, element = "div", poison, total) {
 
   const content = uniqCard.getDesc(poison);
 
-  card.innerHTML = `
-        <div class="image sprite ${id}"></div>
-        <div class="name">${uniqCard.getName()}</div>
-        <div class="effect">${content.replace(
-          new RegExp(Object.keys(codeToClassName).join("|"), "g"),
-          (match) => `<span class="sprite ${codeToClassName[match]}"></span>`
-        )}</div>
-    `;
+  card.innerHTML = `<div class="image sprite ${id}"></div><div class="name">${uniqCard.getName()}</div><div class="effect">${content.replace(
+    new RegExp(Object.keys(codeToClassName).join("|"), "g"),
+    (match) => `<span class="sprite ${codeToClassName[match]}"></span>`
+  )}</div>`;
 
   return card;
 }

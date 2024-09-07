@@ -2,3 +2,4 @@
 node_modules
 index.js
 ./scripts/web3/*.js
+min.html
