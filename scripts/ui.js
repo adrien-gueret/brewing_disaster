@@ -363,12 +363,8 @@ export function renderCharacterList(characters) {
     } else {
       nodeToInsert = document.createElement("a");
       if (character.id === "custom") {
-        const origin =
-          window.location.origin !== "https://adrien-gueret.github.io" &&
-          window.location.origin !== "https://192.168.1.38:5500"
-            ? "https://adrien-gueret.github.io/brewing_disaster"
-            : "";
-        nodeToInsert.href = origin + "/your_characters.html";
+        nodeToInsert.href =
+          "https://adrien-gueret.github.io/brewing_disaster/your_characters.html";
 
         nodeToInsert.target = "_blank";
         nodeToInsert.rel = "opener";
