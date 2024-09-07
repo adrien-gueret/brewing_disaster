@@ -51,14 +51,6 @@ import { zip, COMPRESSION_LEVEL } from "zip-a-folder";
     .replaceAll("--shadow", "--s")
     .replaceAll("--border", "--b")
     .replaceAll("--radius", "--r")
-    .replaceAll("worm", "w")
-    .replaceAll("fly", "f")
-    .replaceAll("bat", "b")
-    .replaceAll("spider", "s")
-    .replaceAll("apple", "a")
-    .replaceAll("berry", "y")
-    .replaceAll("meat", "m")
-    .replaceAll("brain", "r")
     .replaceAll("./images/sprites.png", toBase64Url("./images/sprites.png"));
 
   const ids = [...indexHTML.matchAll(/id="([^"]*?)"/g)];

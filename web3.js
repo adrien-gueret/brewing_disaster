@@ -180,14 +180,14 @@
 	}
 
 	const allCardDataBase = [
-	  new CardDataBase("worm", "Worm", 1),
-	  new CardDataBase("fly", "Fly", 2),
-	  new CardDataBase("bat", "Bat", 3),
-	  new CardDataBase("spider", "Spider", 4),
-	  new CardDataBase("apple", "Apple", -1),
-	  new CardDataBase("berry", "Berry", -2),
-	  new CardDataDiviser("meat", "Meat", 2),
-	  new CardDataMultipler("brain", "Brain", 2),
+	  new CardDataBase("w", "Worm", 1),
+	  new CardDataBase("f", "Fly", 2),
+	  new CardDataBase("b", "Bat", 3),
+	  new CardDataBase("s", "Spider", 4),
+	  new CardDataBase("a", "Apple", -1),
+	  new CardDataBase("y", "Berry", -2),
+	  new CardDataDiviser("m", "Meat", 2),
+	  new CardDataMultipler("r", "Brain", 2),
 	];
 
 	function getCardDataById(idToFind) {
@@ -196,30 +196,30 @@
 
 	function getRandomCards(winsCount = 1, passives = []) {
 	  const [cardId1, cardId2, cardId3] = shuffleArray([
-	    winsCount > 4 ? "spider" : "worm",
-	    winsCount > 2 ? "fly" : "worm",
-	    winsCount > 2 ? "fly" : "worm",
-	    winsCount > 4 ? "meat" : "worm",
-	    winsCount > 4 ? "brain" : "worm",
-	    "fly",
-	    "fly",
-	    winsCount > 2 ? "apple" : "fly",
-	    winsCount > 2 ? "apple" : "fly",
-	    "bat",
-	    winsCount > 2 ? "spider" : "bat",
-	    winsCount > 4 ? "spider" : "bat",
-	    winsCount > 2 ? "spider" : "fly",
-	    winsCount > 2 ? "spider" : "bat",
-	    "apple",
-	    "apple",
-	    "apple",
-	    winsCount > 4 ? "berry" : "apple",
-	    winsCount > 4 ? "berry" : "apple",
-	    "berry",
-	    "berry",
-	    "berry",
-	    winsCount > 4 ? "meat" : "berry",
-	    winsCount > 4 ? "brain" : "bat",
+	    winsCount > 4 ? "s" : "w",
+	    winsCount > 2 ? "f" : "w",
+	    winsCount > 2 ? "f" : "w",
+	    winsCount > 4 ? "m" : "w",
+	    winsCount > 4 ? "r" : "w",
+	    "f",
+	    "f",
+	    winsCount > 2 ? "a" : "f",
+	    winsCount > 2 ? "a" : "f",
+	    "b",
+	    winsCount > 2 ? "s" : "b",
+	    winsCount > 4 ? "s" : "b",
+	    winsCount > 2 ? "s" : "f",
+	    winsCount > 2 ? "s" : "b",
+	    "a",
+	    "a",
+	    "a",
+	    winsCount > 4 ? "y" : "a",
+	    winsCount > 4 ? "y" : "a",
+	    "y",
+	    "y",
+	    "y",
+	    winsCount > 4 ? "m" : "y",
+	    winsCount > 4 ? "r" : "b",
 	  ]);
 
 	  return [cardId1, cardId2, cardId3].map((id) => new UniqCard(id, passives));
@@ -5281,14 +5281,14 @@
 	keccak256$3.keccak256 = keccak256$2;
 	const sha3_1$1 = sha3;
 	const isHex_js_1$a = isHex$1;
-	const toBytes_js_1$m = requireToBytes();
-	const toHex_js_1$S = requireToHex();
+	const toBytes_js_1$l = requireToBytes();
+	const toHex_js_1$R = requireToHex();
 	function keccak256$2(value, to_) {
 	    const to = to_ || 'hex';
-	    const bytes = (0, sha3_1$1.keccak_256)((0, isHex_js_1$a.isHex)(value, { strict: false }) ? (0, toBytes_js_1$m.toBytes)(value) : value);
+	    const bytes = (0, sha3_1$1.keccak_256)((0, isHex_js_1$a.isHex)(value, { strict: false }) ? (0, toBytes_js_1$l.toBytes)(value) : value);
 	    if (to === 'bytes')
 	        return bytes;
-	    return (0, toHex_js_1$S.toHex)(bytes);
+	    return (0, toHex_js_1$R.toHex)(bytes);
 	}
 
 	var toEventSelector = {};
@@ -5299,9 +5299,9 @@
 
 	Object.defineProperty(hashSignature$1, "__esModule", { value: true });
 	hashSignature$1.hashSignature = hashSignature;
-	const toBytes_js_1$l = requireToBytes();
-	const keccak256_js_1$c = keccak256$3;
-	const hash = (value) => (0, keccak256_js_1$c.keccak256)((0, toBytes_js_1$l.toBytes)(value));
+	const toBytes_js_1$k = requireToBytes();
+	const keccak256_js_1$b = keccak256$3;
+	const hash = (value) => (0, keccak256_js_1$b.keccak256)((0, toBytes_js_1$k.toBytes)(value));
 	function hashSignature(sig) {
 	    return hash(sig);
 	}
@@ -5598,11 +5598,11 @@
 	const address_js_1$8 = address$2;
 	const base_js_1$r = base$1;
 	const isAddress_js_1$8 = requireIsAddress();
-	const concat_js_1$9 = concat$1;
+	const concat_js_1$8 = concat$1;
 	const pad_js_1$3 = pad$1;
 	const size_js_1$6 = size$2;
 	const slice_js_1$8 = slice$1;
-	const toHex_js_1$R = requireToHex();
+	const toHex_js_1$Q = requireToHex();
 	function encodeAbiParameters$2(params, values) {
 	    if (params.length !== values.length)
 	        throw new abi_js_1$j.AbiEncodingLengthMismatchError({
@@ -5671,7 +5671,7 @@
 	    for (let i = 0; i < preparedParams.length; i++) {
 	        const { dynamic, encoded } = preparedParams[i];
 	        if (dynamic) {
-	            staticParams.push((0, toHex_js_1$R.numberToHex)(staticSize + dynamicSize, { size: 32 }));
+	            staticParams.push((0, toHex_js_1$Q.numberToHex)(staticSize + dynamicSize, { size: 32 }));
 	            dynamicParams.push(encoded);
 	            dynamicSize += (0, size_js_1$6.size)(encoded);
 	        }
@@ -5679,7 +5679,7 @@
 	            staticParams.push(encoded);
 	        }
 	    }
-	    return (0, concat_js_1$9.concat)([...staticParams, ...dynamicParams]);
+	    return (0, concat_js_1$8.concat)([...staticParams, ...dynamicParams]);
 	}
 	function encodeAddress$1(value) {
 	    if (!(0, isAddress_js_1$8.isAddress)(value))
@@ -5707,10 +5707,10 @@
 	    if (dynamic || dynamicChild) {
 	        const data = encodeParams$1(preparedParams);
 	        if (dynamic) {
-	            const length = (0, toHex_js_1$R.numberToHex)(preparedParams.length, { size: 32 });
+	            const length = (0, toHex_js_1$Q.numberToHex)(preparedParams.length, { size: 32 });
 	            return {
 	                dynamic: true,
-	                encoded: preparedParams.length > 0 ? (0, concat_js_1$9.concat)([length, data]) : length,
+	                encoded: preparedParams.length > 0 ? (0, concat_js_1$8.concat)([length, data]) : length,
 	            };
 	        }
 	        if (dynamicChild)
@@ -5718,7 +5718,7 @@
 	    }
 	    return {
 	        dynamic: false,
-	        encoded: (0, concat_js_1$9.concat)(preparedParams.map(({ encoded }) => encoded)),
+	        encoded: (0, concat_js_1$8.concat)(preparedParams.map(({ encoded }) => encoded)),
 	    };
 	}
 	function encodeBytes$1(value, { param }) {
@@ -5733,7 +5733,7 @@
 	            });
 	        return {
 	            dynamic: true,
-	            encoded: (0, concat_js_1$9.concat)([(0, pad_js_1$3.padHex)((0, toHex_js_1$R.numberToHex)(bytesSize, { size: 32 })), value_]),
+	            encoded: (0, concat_js_1$8.concat)([(0, pad_js_1$3.padHex)((0, toHex_js_1$Q.numberToHex)(bytesSize, { size: 32 })), value_]),
 	        };
 	    }
 	    if (bytesSize !== Number.parseInt(paramSize))
@@ -5746,19 +5746,19 @@
 	function encodeBool$1(value) {
 	    if (typeof value !== 'boolean')
 	        throw new base_js_1$r.BaseError(`Invalid boolean value: "${value}" (type: ${typeof value}). Expected: \`true\` or \`false\`.`);
-	    return { dynamic: false, encoded: (0, pad_js_1$3.padHex)((0, toHex_js_1$R.boolToHex)(value)) };
+	    return { dynamic: false, encoded: (0, pad_js_1$3.padHex)((0, toHex_js_1$Q.boolToHex)(value)) };
 	}
 	function encodeNumber$1(value, { signed }) {
 	    return {
 	        dynamic: false,
-	        encoded: (0, toHex_js_1$R.numberToHex)(value, {
+	        encoded: (0, toHex_js_1$Q.numberToHex)(value, {
 	            size: 32,
 	            signed,
 	        }),
 	    };
 	}
 	function encodeString$1(value) {
-	    const hexValue = (0, toHex_js_1$R.stringToHex)(value);
+	    const hexValue = (0, toHex_js_1$Q.stringToHex)(value);
 	    const partsLength = Math.ceil((0, size_js_1$6.size)(hexValue) / 32);
 	    const parts = [];
 	    for (let i = 0; i < partsLength; i++) {
@@ -5768,8 +5768,8 @@
 	    }
 	    return {
 	        dynamic: true,
-	        encoded: (0, concat_js_1$9.concat)([
-	            (0, pad_js_1$3.padHex)((0, toHex_js_1$R.numberToHex)((0, size_js_1$6.size)(hexValue), { size: 32 })),
+	        encoded: (0, concat_js_1$8.concat)([
+	            (0, pad_js_1$3.padHex)((0, toHex_js_1$Q.numberToHex)((0, size_js_1$6.size)(hexValue), { size: 32 })),
 	            ...parts,
 	        ]),
 	    };
@@ -5792,7 +5792,7 @@
 	        dynamic,
 	        encoded: dynamic
 	            ? encodeParams$1(preparedParams)
-	            : (0, concat_js_1$9.concat)(preparedParams.map(({ encoded }) => encoded)),
+	            : (0, concat_js_1$8.concat)(preparedParams.map(({ encoded }) => encoded)),
 	    };
 	}
 	function getArrayComponents$1(type) {
@@ -5943,8 +5943,8 @@
 	encodeEventTopics$1.encodeEventTopics = encodeEventTopics;
 	const abi_js_1$h = requireAbi();
 	const log_js_1$5 = log$1;
-	const toBytes_js_1$k = requireToBytes();
-	const keccak256_js_1$b = keccak256$3;
+	const toBytes_js_1$j = requireToBytes();
+	const keccak256_js_1$a = keccak256$3;
 	const toEventSelector_js_1$1 = toEventSelector;
 	const encodeAbiParameters_js_1$9 = encodeAbiParameters$3;
 	const formatAbiItem_js_1$6 = requireFormatAbiItem();
@@ -5984,7 +5984,7 @@
 	}
 	function encodeArg({ param, value, }) {
 	    if (param.type === 'string' || param.type === 'bytes')
-	        return (0, keccak256_js_1$b.keccak256)((0, toBytes_js_1$k.toBytes)(value));
+	        return (0, keccak256_js_1$a.keccak256)((0, toBytes_js_1$j.toBytes)(value));
 	    if (param.type === 'tuple' || param.type.match(/^(.*)\[(\d+)?\]$/))
 	        throw new log_js_1$5.FilterTypeNotSupportedError(param.type);
 	    return (0, encodeAbiParameters_js_1$9.encodeAbiParameters)([param], [value]);
@@ -6007,7 +6007,7 @@
 	Object.defineProperty(createContractEventFilter$1, "__esModule", { value: true });
 	createContractEventFilter$1.createContractEventFilter = createContractEventFilter;
 	const encodeEventTopics_js_1$4 = encodeEventTopics$1;
-	const toHex_js_1$Q = requireToHex();
+	const toHex_js_1$P = requireToHex();
 	const createFilterRequestScope_js_1$3 = createFilterRequestScope$1;
 	async function createContractEventFilter(client, parameters) {
 	    const { address, abi, args, eventName, fromBlock, strict, toBlock } = parameters;
@@ -6026,8 +6026,8 @@
 	        params: [
 	            {
 	                address,
-	                fromBlock: typeof fromBlock === 'bigint' ? (0, toHex_js_1$Q.numberToHex)(fromBlock) : fromBlock,
-	                toBlock: typeof toBlock === 'bigint' ? (0, toHex_js_1$Q.numberToHex)(toBlock) : toBlock,
+	                fromBlock: typeof fromBlock === 'bigint' ? (0, toHex_js_1$P.numberToHex)(fromBlock) : fromBlock,
+	                toBlock: typeof toBlock === 'bigint' ? (0, toHex_js_1$P.numberToHex)(toBlock) : toBlock,
 	                topics,
 	            },
 	        ],
@@ -6089,7 +6089,7 @@
 
 	Object.defineProperty(encodeFunctionData$1, "__esModule", { value: true });
 	encodeFunctionData$1.encodeFunctionData = encodeFunctionData;
-	const concat_js_1$8 = concat$1;
+	const concat_js_1$7 = concat$1;
 	const encodeAbiParameters_js_1$8 = encodeAbiParameters$3;
 	const prepareEncodeFunctionData_js_1 = prepareEncodeFunctionData$1;
 	function encodeFunctionData(parameters) {
@@ -6105,7 +6105,7 @@
 	    const data = 'inputs' in abiItem && abiItem.inputs
 	        ? (0, encodeAbiParameters_js_1$8.encodeAbiParameters)(abiItem.inputs, args ?? [])
 	        : undefined;
-	    return (0, concat_js_1$8.concatHex)([signature, data ?? '0x']);
+	    return (0, concat_js_1$7.concatHex)([signature, data ?? '0x']);
 	}
 
 	var getContractError$1 = {};
@@ -6363,7 +6363,7 @@
 	const encoding_js_1$1 = encoding;
 	const trim_js_1$4 = trim$3;
 	const fromHex_js_1$c = requireFromHex();
-	const toHex_js_1$P = requireToHex();
+	const toHex_js_1$O = requireToHex();
 	function fromBytes$2(bytes, toOrOpts) {
 	    const opts = typeof toOrOpts === 'string' ? { to: toOrOpts } : toOrOpts;
 	    const to = opts.to;
@@ -6375,12 +6375,12 @@
 	        return bytesToBool$1(bytes, opts);
 	    if (to === 'string')
 	        return bytesToString$1(bytes, opts);
-	    return (0, toHex_js_1$P.bytesToHex)(bytes, opts);
+	    return (0, toHex_js_1$O.bytesToHex)(bytes, opts);
 	}
 	function bytesToBigInt$1(bytes, opts = {}) {
 	    if (typeof opts.size !== 'undefined')
 	        (0, fromHex_js_1$c.assertSize)(bytes, { size: opts.size });
-	    const hex = (0, toHex_js_1$P.bytesToHex)(bytes, opts);
+	    const hex = (0, toHex_js_1$O.bytesToHex)(bytes, opts);
 	    return (0, fromHex_js_1$c.hexToBigInt)(hex, opts);
 	}
 	function bytesToBool$1(bytes_, opts = {}) {
@@ -6396,7 +6396,7 @@
 	function bytesToNumber$1(bytes, opts = {}) {
 	    if (typeof opts.size !== 'undefined')
 	        (0, fromHex_js_1$c.assertSize)(bytes, { size: opts.size });
-	    const hex = (0, toHex_js_1$P.bytesToHex)(bytes, opts);
+	    const hex = (0, toHex_js_1$O.bytesToHex)(bytes, opts);
 	    return (0, fromHex_js_1$c.hexToNumber)(hex, opts);
 	}
 	function bytesToString$1(bytes_, opts = {}) {
@@ -6417,17 +6417,17 @@
 	const slice_js_1$6 = slice$1;
 	const trim_js_1$3 = trim$3;
 	const fromBytes_js_1 = fromBytes$3;
-	const toBytes_js_1$j = requireToBytes();
-	const toHex_js_1$O = requireToHex();
+	const toBytes_js_1$i = requireToBytes();
+	const toHex_js_1$N = requireToHex();
 	const encodeAbiParameters_js_1$7 = encodeAbiParameters$3;
 	function decodeAbiParameters(params, data) {
-	    const bytes = typeof data === 'string' ? (0, toBytes_js_1$j.hexToBytes)(data) : data;
+	    const bytes = typeof data === 'string' ? (0, toBytes_js_1$i.hexToBytes)(data) : data;
 	    const cursor = (0, cursor_js_1$5.createCursor)(bytes);
 	    if ((0, size_js_1$5.size)(bytes) === 0 && params.length > 0)
 	        throw new abi_js_1$f.AbiDecodingZeroDataError();
 	    if ((0, size_js_1$5.size)(data) && (0, size_js_1$5.size)(data) < 32)
 	        throw new abi_js_1$f.AbiDecodingDataSizeTooSmallError({
-	            data: typeof data === 'string' ? data : (0, toHex_js_1$O.bytesToHex)(data),
+	            data: typeof data === 'string' ? data : (0, toHex_js_1$N.bytesToHex)(data),
 	            params: params,
 	            size: (0, size_js_1$5.size)(data),
 	        });
@@ -6470,7 +6470,7 @@
 	const sizeOfOffset = 32;
 	function decodeAddress(cursor) {
 	    const value = cursor.readBytes(32);
-	    return [(0, getAddress_js_1$8.checksumAddress)((0, toHex_js_1$O.bytesToHex)((0, slice_js_1$6.sliceBytes)(value, -20))), 32];
+	    return [(0, getAddress_js_1$8.checksumAddress)((0, toHex_js_1$N.bytesToHex)((0, slice_js_1$6.sliceBytes)(value, -20))), 32];
 	}
 	function decodeArray(cursor, param, { length, staticPosition }) {
 	    if (!length) {
@@ -6533,9 +6533,9 @@
 	        }
 	        const data = cursor.readBytes(length);
 	        cursor.setPosition(staticPosition + 32);
-	        return [(0, toHex_js_1$O.bytesToHex)(data), 32];
+	        return [(0, toHex_js_1$N.bytesToHex)(data), 32];
 	    }
-	    const value = (0, toHex_js_1$O.bytesToHex)(cursor.readBytes(Number.parseInt(size), 32));
+	    const value = (0, toHex_js_1$N.bytesToHex)(cursor.readBytes(Number.parseInt(size), 32));
 	    return [value, 32];
 	}
 	function decodeNumber(cursor, param) {
@@ -7724,7 +7724,7 @@
 
 	var estimateGas$3 = {};
 
-	var recoverAuthorizationAddress$1 = {};
+	var recoverAuthorizationAddress = {};
 
 	var recoverAddress$1 = {};
 
@@ -7733,9 +7733,9 @@
 	Object.defineProperty(publicKeyToAddress$1, "__esModule", { value: true });
 	publicKeyToAddress$1.publicKeyToAddress = publicKeyToAddress;
 	const getAddress_js_1$7 = requireGetAddress();
-	const keccak256_js_1$a = keccak256$3;
+	const keccak256_js_1$9 = keccak256$3;
 	function publicKeyToAddress(publicKey) {
-	    const address = (0, keccak256_js_1$a.keccak256)(`0x${publicKey.substring(4)}`).substring(26);
+	    const address = (0, keccak256_js_1$9.keccak256)(`0x${publicKey.substring(4)}`).substring(26);
 	    return (0, getAddress_js_1$7.checksumAddress)(`0x${address}`);
 	}
 
@@ -10244,9 +10244,9 @@
 	recoverPublicKey$1.recoverPublicKey = recoverPublicKey;
 	const isHex_js_1$7 = isHex$1;
 	const fromHex_js_1$b = requireFromHex();
-	const toHex_js_1$N = requireToHex();
+	const toHex_js_1$M = requireToHex();
 	async function recoverPublicKey({ hash, signature, }) {
-	    const hashHex = (0, isHex_js_1$7.isHex)(hash) ? hash : (0, toHex_js_1$N.toHex)(hash);
+	    const hashHex = (0, isHex_js_1$7.isHex)(hash) ? hash : (0, toHex_js_1$M.toHex)(hash);
 	    const { secp256k1: secp256k1$1 } = await Promise.resolve().then(() => secp256k1);
 	    const signature_ = (() => {
 	        if (typeof signature === 'object' && 'r' in signature && 's' in signature) {
@@ -10255,7 +10255,7 @@
 	            const recoveryBit = toRecoveryBit(yParityOrV);
 	            return new secp256k1$1.Signature((0, fromHex_js_1$b.hexToBigInt)(r), (0, fromHex_js_1$b.hexToBigInt)(s)).addRecoveryBit(recoveryBit);
 	        }
-	        const signatureHex = (0, isHex_js_1$7.isHex)(signature) ? signature : (0, toHex_js_1$N.toHex)(signature);
+	        const signatureHex = (0, isHex_js_1$7.isHex)(signature) ? signature : (0, toHex_js_1$M.toHex)(signature);
 	        const yParityOrV = (0, fromHex_js_1$b.hexToNumber)(`0x${signatureHex.slice(130)}`);
 	        const recoveryBit = toRecoveryBit(yParityOrV);
 	        return secp256k1$1.Signature.fromCompact(signatureHex.substring(2, 130)).addRecoveryBit(recoveryBit);
@@ -10283,7 +10283,7 @@
 	    return (0, publicKeyToAddress_js_1.publicKeyToAddress)(await (0, recoverPublicKey_js_1.recoverPublicKey)({ hash: hash, signature }));
 	}
 
-	var hashAuthorization$1 = {};
+	var hashAuthorization = {};
 
 	var toRlp$1 = {};
 
@@ -10293,14 +10293,14 @@
 	toRlp$1.hexToRlp = hexToRlp;
 	const base_js_1$j = base$1;
 	const cursor_js_1$4 = cursor$1;
-	const toBytes_js_1$i = requireToBytes();
-	const toHex_js_1$M = requireToHex();
+	const toBytes_js_1$h = requireToBytes();
+	const toHex_js_1$L = requireToHex();
 	function toRlp(bytes, to = 'hex') {
 	    const encodable = getEncodable(bytes);
 	    const cursor = (0, cursor_js_1$4.createCursor)(new Uint8Array(encodable.length));
 	    encodable.encode(cursor);
 	    if (to === 'hex')
-	        return (0, toHex_js_1$M.bytesToHex)(cursor.bytes);
+	        return (0, toHex_js_1$L.bytesToHex)(cursor.bytes);
 	    return cursor.bytes;
 	}
 	function bytesToRlp(bytes, to = 'bytes') {
@@ -10346,7 +10346,7 @@
 	    };
 	}
 	function getEncodableBytes(bytesOrHex) {
-	    const bytes = typeof bytesOrHex === 'string' ? (0, toBytes_js_1$i.hexToBytes)(bytesOrHex) : bytesOrHex;
+	    const bytes = typeof bytesOrHex === 'string' ? (0, toBytes_js_1$h.hexToBytes)(bytesOrHex) : bytesOrHex;
 	    const sizeOfBytesLength = getSizeOfLength(bytes.length);
 	    const length = (() => {
 	        if (bytes.length === 1 && bytes[0] < 0x80)
@@ -10392,34 +10392,50 @@
 	    throw new base_js_1$j.BaseError('Length is too large.');
 	}
 
-	Object.defineProperty(hashAuthorization$1, "__esModule", { value: true });
-	hashAuthorization$1.hashAuthorization = hashAuthorization;
-	const concat_js_1$7 = concat$1;
-	const toBytes_js_1$h = requireToBytes();
-	const toHex_js_1$L = requireToHex();
-	const toRlp_js_1$1 = toRlp$1;
-	const keccak256_js_1$9 = keccak256$3;
-	function hashAuthorization(parameters) {
-	    const { chainId, contractAddress, nonce, to } = parameters;
-	    const hash = (0, keccak256_js_1$9.keccak256)((0, concat_js_1$7.concatHex)([
-	        '0x05',
-	        (0, toRlp_js_1$1.toRlp)([(0, toHex_js_1$L.numberToHex)(chainId), contractAddress, (0, toHex_js_1$L.numberToHex)(nonce)]),
-	    ]));
-	    if (to === 'bytes')
-	        return (0, toBytes_js_1$h.hexToBytes)(hash);
-	    return hash;
+	var hasRequiredHashAuthorization;
+
+	function requireHashAuthorization () {
+		if (hasRequiredHashAuthorization) return hashAuthorization;
+		hasRequiredHashAuthorization = 1;
+		Object.defineProperty(hashAuthorization, "__esModule", { value: true });
+		hashAuthorization.hashAuthorization = hashAuthorization$1;
+		const concat_js_1 = concat$1;
+		const toBytes_js_1 = requireToBytes();
+		const toHex_js_1 = requireToHex();
+		const toRlp_js_1 = toRlp$1;
+		const keccak256_js_1 = keccak256$3;
+		function hashAuthorization$1(parameters) {
+		    const { chainId, contractAddress, nonce, to } = parameters;
+		    const hash = (0, keccak256_js_1.keccak256)((0, concat_js_1.concatHex)([
+		        '0x05',
+		        (0, toRlp_js_1.toRlp)([(0, toHex_js_1.numberToHex)(chainId), contractAddress, (0, toHex_js_1.numberToHex)(nonce)]),
+		    ]));
+		    if (to === 'bytes')
+		        return (0, toBytes_js_1.hexToBytes)(hash);
+		    return hash;
+		}
+		
+		return hashAuthorization;
 	}
 
-	Object.defineProperty(recoverAuthorizationAddress$1, "__esModule", { value: true });
-	recoverAuthorizationAddress$1.recoverAuthorizationAddress = recoverAuthorizationAddress;
-	const recoverAddress_js_1$5 = recoverAddress$1;
-	const hashAuthorization_js_1 = hashAuthorization$1;
-	async function recoverAuthorizationAddress(parameters) {
-	    const { authorization, signature } = parameters;
-	    return (0, recoverAddress_js_1$5.recoverAddress)({
-	        hash: (0, hashAuthorization_js_1.hashAuthorization)(authorization),
-	        signature: (signature ?? authorization),
-	    });
+	var hasRequiredRecoverAuthorizationAddress;
+
+	function requireRecoverAuthorizationAddress () {
+		if (hasRequiredRecoverAuthorizationAddress) return recoverAuthorizationAddress;
+		hasRequiredRecoverAuthorizationAddress = 1;
+		Object.defineProperty(recoverAuthorizationAddress, "__esModule", { value: true });
+		recoverAuthorizationAddress.recoverAuthorizationAddress = recoverAuthorizationAddress$1;
+		const recoverAddress_js_1 = recoverAddress$1;
+		const hashAuthorization_js_1 = requireHashAuthorization();
+		async function recoverAuthorizationAddress$1(parameters) {
+		    const { authorization, signature } = parameters;
+		    return (0, recoverAddress_js_1.recoverAddress)({
+		        hash: (0, hashAuthorization_js_1.hashAuthorization)(authorization),
+		        signature: (signature ?? authorization),
+		    });
+		}
+		
+		return recoverAuthorizationAddress;
 	}
 
 	var getEstimateGasError$1 = {};
@@ -11768,7 +11784,7 @@
 		estimateGas$3.estimateGas = estimateGas;
 		const parseAccount_js_1 = parseAccount$1;
 		const base_js_1 = base$1;
-		const recoverAuthorizationAddress_js_1 = recoverAuthorizationAddress$1;
+		const recoverAuthorizationAddress_js_1 = requireRecoverAuthorizationAddress();
 		const toHex_js_1 = requireToHex();
 		const getEstimateGasError_js_1 = getEstimateGasError$1;
 		const extract_js_1 = extract$1;
@@ -14820,7 +14836,7 @@
 	const parseAccount_js_1$5 = parseAccount$1;
 	const account_js_1$4 = account;
 	const base_js_1$9 = base$1;
-	const recoverAuthorizationAddress_js_1 = recoverAuthorizationAddress$1;
+	const recoverAuthorizationAddress_js_1 = requireRecoverAuthorizationAddress();
 	const assertCurrentChain_js_1$1 = assertCurrentChain$1;
 	const getTransactionError_js_1 = getTransactionError$1;
 	const extract_js_1$1 = extract$1;

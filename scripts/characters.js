@@ -20,13 +20,7 @@ export const allCharacters = [
     "totter",
     "I wanna be the very best wizard!",
     ["pw", "swp", "ef"],
-    deck([
-      card("worm", 3),
-      card("fly", 2),
-      card("bat", 2),
-      card("apple", 2),
-      card("berry"),
-    ])
+    deck([card("w", 3), card("f", 2), card("b", 2), card("a", 2), card("y")])
   ),
   character(
     "Wizard of the Cough",
@@ -34,7 +28,7 @@ export const allCharacters = [
     "cough",
     "I... like... flies...",
     ["sfp", "iap", "ef"],
-    deck([card("fly", 6), card("bat", 1), card("apple", 3)])
+    deck([card("f", 6), card("b", 1), card("a", 3)])
   ),
   character(
     "Wizard of the Old",
@@ -43,14 +37,14 @@ export const allCharacters = [
     "I am old and wise...",
     ["pw", "ifp", "iwp"],
     deck([
-      card("worm", 2),
-      card("fly"),
-      card("bat"),
-      card("spider"),
-      card("berry"),
-      card("apple", 2),
-      card("brain"),
-      card("meat"),
+      card("w", 2),
+      card("f"),
+      card("b"),
+      card("s"),
+      card("y"),
+      card("a", 2),
+      card("r"),
+      card("m"),
     ])
   ),
   character(
@@ -59,13 +53,7 @@ export const allCharacters = [
     "boast",
     "I have the best ingredients!",
     ["sbp", "ps", "eb"],
-    deck([
-      card("bat", 4),
-      card("berry", 2),
-      card("spider", 2),
-      card("brain"),
-      card("meat"),
-    ])
+    deck([card("b", 4), card("y", 2), card("s", 2), card("r"), card("m")])
   ),
   character(
     "Wizard of the Haste",
@@ -73,7 +61,7 @@ export const allCharacters = [
     "haste",
     "It's already too putrid!",
     ["pa", "sap", "ey"],
-    deck([card("apple", 4), card("berry", 4), card("meat", 2)])
+    deck([card("a", 4), card("y", 4), card("m", 2)])
   ),
   character(
     "Wizard of the Custom",

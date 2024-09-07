@@ -359,35 +359,35 @@ q {
   }
 }
 
-#title .sprite.apple {
+#title .sprite.a {
   animation-delay: 33ms;
 }
 
-#title .sprite.spider {
+#title .sprite.s {
   animation-delay: 3s;
 }
 
-#title .sprite.fly {
+#title .sprite.f {
   animation-delay: 6s;
 }
 
-#title .sprite.berry {
+#title .sprite.y {
   animation-delay: 9s;
 }
 
-#title .sprite.meat {
+#title .sprite.m {
   animation-delay: 12s;
 }
 
-#title .sprite.worm {
+#title .sprite.w {
   animation-delay: 15s;
 }
 
-#title .sprite.brain {
+#title .sprite.r {
   animation-delay: 18s;
 }
 
-#title .sprite.bat {
+#title .sprite.b {
   animation-delay: 21s;
 }
 
@@ -665,7 +665,7 @@ q {
   background-position: var(--x) var(--y);
 }
 
-.sprite.spider,
+.sprite.s,
 .ssp::before,
 .isp::before,
 .ps::before,
@@ -678,7 +678,7 @@ q {
   --y: 0;
 }
 
-.sprite.apple,
+.sprite.a,
 .sap::before,
 .iap::before,
 .pa::before,
@@ -691,7 +691,7 @@ q {
   --y: 0;
 }
 
-.sprite.bat,
+.sprite.b,
 .sbp::before,
 .ibp::before,
 .pb::before,
@@ -704,7 +704,7 @@ q {
   --y: 0;
 }
 
-.sprite.worm,
+.sprite.w,
 .swp::before,
 .iwp::before,
 .pw::before,
@@ -717,7 +717,7 @@ q {
   --y: 0;
 }
 
-.sprite.fly,
+.sprite.f,
 .sfp::before,
 .ifp::before,
 .pf::before,
@@ -730,7 +730,7 @@ q {
   --y: -16px;
 }
 
-.sprite.berry,
+.sprite.y,
 .syp::before,
 .iyp::before,
 .py::before,
@@ -793,12 +793,12 @@ q {
   --y: -64px;
 }
 
-.sprite.meat {
+.sprite.m {
   --x: -48px;
   --y: -64px;
 }
 
-.sprite.brain {
+.sprite.r {
   --x: -32px;
   --y: -112px;
 }

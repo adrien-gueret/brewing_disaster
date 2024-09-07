@@ -18,26 +18,25 @@ const generatePassiveData = (
   level,
 });
 
-const generateIngredientMetadata = (name, plural, id, letter, sign) => ({
+const generateIngredientMetadata = (name, plural, id, sign) => ({
   id,
   name,
   plural,
-  letter,
   sign,
 });
 
 const allEffectData = [
-  generateIngredientMetadata("Worm", "Worms", "worm", "w", 1),
-  generateIngredientMetadata("Fly", "Flies", "fly", "f", 1),
-  generateIngredientMetadata("Bat", "Bats", "bat", "b", 1),
-  generateIngredientMetadata("Spider", "Spiders", "spider", "s", 1),
-  generateIngredientMetadata("Apple", "Apples", "apple", "a", -1),
-  generateIngredientMetadata("Berry", "Berries", "berry", "y", -1),
-].flatMap(({ id, name, plural, letter, sign }) => {
-  const code = `{${letter.toUpperCase()}}`;
+  generateIngredientMetadata("Worm", "Worms", "w", 1),
+  generateIngredientMetadata("Fly", "Flies", "f", 1),
+  generateIngredientMetadata("Bat", "Bats", "b", 1),
+  generateIngredientMetadata("Spider", "Spiders", "s", 1),
+  generateIngredientMetadata("Apple", "Apples", "a", -1),
+  generateIngredientMetadata("Berry", "Berries", "y", -1),
+].flatMap(({ id, name, plural, sign }) => {
+  const code = `{${id.toUpperCase()}}`;
   return [
     generatePassiveData(
-      `s${letter}p`,
+      `s${id}p`,
       `Superior ${name} Potion`,
       id,
       `Your ${code} have {P} ${sign > 0 ? "+" : "-"}1`,
@@ -45,7 +44,7 @@ const allEffectData = [
       1
     ),
     generatePassiveData(
-      `i${letter}p`,
+      `i${id}p`,
       `Inferior ${name} Potion`,
       id,
       `Your ${code} have {P} ${sign > 0 ? "-" : "+"}1`,
@@ -53,7 +52,7 @@ const allEffectData = [
       1
     ),
     generatePassiveData(
-      `p${letter}`,
+      `p${id}`,
       `Poisoned ${name}`,
       id,
       `When adding ${code}, next opponent's ingredient has {P} ${
@@ -61,16 +60,16 @@ const allEffectData = [
       }1`,
       "poisoned",
       2,
-      `e${letter}`
+      `e${id}`
     ),
     generatePassiveData(
-      `e${letter}`,
+      `e${id}`,
       `Expert of ${plural}`,
       id,
       `You cannot lose when adding ${code}`,
       "expert",
       3,
-      `p${letter}`
+      `p${id}`
     ),
   ];
 });
