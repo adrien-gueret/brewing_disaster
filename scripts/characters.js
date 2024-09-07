@@ -28,7 +28,7 @@ export const allCharacters = [
     "cough",
     "I... like... flies...",
     ["sfp", "iap", "ef"],
-    deck([card("f", 6), card("b", 1), card("a", 3)])
+    deck([card("f", 6), card("b", 3), card("a", 1)])
   ),
   character(
     "Wizard of the Old",
