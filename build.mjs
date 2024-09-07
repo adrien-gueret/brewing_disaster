@@ -64,7 +64,7 @@ import { zip, COMPRESSION_LEVEL } from "zip-a-folder";
   const ids = [...indexHTML.matchAll(/id="([^"]*?)"/g)];
 
   ids.forEach((id, i) => {
-    if (id[1].length > 5) {
+    if (id[1].length > 5 && id !== "rules") {
       indexHTML = indexHTML.replaceAll(id[1], "_" + i);
     }
   });
@@ -127,7 +127,6 @@ import { zip, COMPRESSION_LEVEL } from "zip-a-folder";
         percentOfTotalBudget
     );
   } else {
-    const percent = Math.round(((size * 100) / JS13K_LIMIT_SIZE) * 100) / 100;
     console.log("✅ All good! " + percentOfTotalBudget);
   }
 
