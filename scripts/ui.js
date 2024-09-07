@@ -25,12 +25,12 @@ const floorCanvasCtx = floorCanvas?.getContext("2d");
 
 const codeToClassName = {
   "{P}": "skull",
-  "{W}": "worm",
-  "{F}": "fly",
-  "{B}": "bat",
-  "{S}": "spider",
-  "{A}": "apple",
-  "{Y}": "berry",
+  "{W}": "w",
+  "{F}": "f",
+  "{B}": "b",
+  "{S}": "s",
+  "{A}": "a",
+  "{Y}": "y",
 };
 
 export function createCardNode(uniqCard, element = "div", poison, total) {
