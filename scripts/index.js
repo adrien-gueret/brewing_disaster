@@ -102,10 +102,18 @@ import initSounds, {
 
   initState();
 
+  let isSoundInit = false;
   initSections(({ currentSection, nextSection, vars }) => {
     if (currentSection === "battleGame") {
       desactivateSceneLight();
-    } else if (currentSection === "title" && nextSection !== "title") {
+    }
+
+    if (
+      !isSoundInit &&
+      ((currentSection === "title" && nextSection !== "title") ||
+        (currentSection === "rules" && nextSection !== "rules"))
+    ) {
+      isSoundInit = true;
       initSounds(areSoundMuted());
     }
 
