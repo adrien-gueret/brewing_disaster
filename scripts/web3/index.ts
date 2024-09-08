@@ -20,9 +20,9 @@ import initUI, {
 
 const hasOpener = Boolean(window.opener);
 
-const rootURL = hasOpener
-  ? "https://js13kgames.com/games/brewing-disaster/index.html"
-  : window.location.origin;
+const gameURL =
+  new URLSearchParams(window.location.search).get("b") ||
+  "https://adrien-gueret.github.io/brewing_disaster/https://adrien-gueret.github.io/brewing_disaster/index.html";
 
 (async () => {
   initClient(
@@ -58,11 +58,7 @@ const rootURL = hasOpener
       checkPrivateKey(() => showPrivateKeyError());
     },
     onCancel() {
-      if (hasOpener) {
-        window.close();
-      } else {
-        window.location.href = rootURL;
-      }
+      window.location.href = gameURL;
     },
     onIngredientAdded(newIngredientIds) {
       renderDeckIngredients(newIngredientIds.map((id) => new UniqCard(id)));
@@ -178,18 +174,7 @@ const rootURL = hasOpener
 
     switch (dataset.action) {
       case "play": {
-        if (hasOpener) {
-          window.opener.history.pushState(
-            null,
-            null,
-            `index.html?d=${dataset.cards}#rules`
-          );
-          window.opener.dispatchEvent(new HashChangeEvent("hashchange"));
-          window.opener.focus();
-          window.close();
-        } else {
-          window.location.href = `${rootURL}/index.html?d=${dataset.cards}#rules`;
-        }
+        window.location.href = `${gameURL}?d=${dataset.cards}#rules`;
       }
 
       case "delete": {

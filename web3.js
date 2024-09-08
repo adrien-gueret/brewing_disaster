@@ -30001,11 +30001,10 @@
 	    } else {
 	      nodeToInsert = document.createElement("a");
 	      if (character.id === "custom") {
+	        const { origin, pathname } = window.location;
 	        nodeToInsert.href =
-	          "https://adrien-gueret.github.io/brewing_disaster/your_characters.html";
-
-	        nodeToInsert.target = "_blank";
-	        nodeToInsert.rel = "opener";
+	          "https://adrien-gueret.github.io/brewing_disaster/your_characters.html?b=" +
+	          encodeURIComponent(origin + pathname);
 	        nodeToInsert.append(cardNode);
 	      } else {
 	        nodeToInsert.href = "#rules";
@@ -30336,10 +30335,8 @@
 	const keys_1 = __importStar(keys);
 	const mu_1 = mu;
 	const ui_1 = __importStar(ui$1);
-	const hasOpener = Boolean(window.opener);
-	const rootURL = hasOpener
-	    ? "https://js13kgames.com/games/brewing-disaster/index.html"
-	    : window.location.origin;
+	const gameURL = new URLSearchParams(window.location.search).get("b") ||
+	    "https://adrien-gueret.github.io/brewing_disaster/https://adrien-gueret.github.io/brewing_disaster/index.html";
 	(async () => {
 	    (0, thirdWebClient_1.default)("l1SCueVB2ZCvJm-c-x2JnWdCygpjiSq3MZa3QPCm2tfQokZe0pH8W-ntr_nDLXzkiz6Ak7NqshYAxW_7o7IrJw");
 	    const privateKey = await (0, keys_1.default)();
@@ -30365,12 +30362,7 @@
 	            checkPrivateKey(() => (0, ui_1.showPrivateKeyError)());
 	        },
 	        onCancel() {
-	            if (hasOpener) {
-	                window.close();
-	            }
-	            else {
-	                window.location.href = rootURL;
-	            }
+	            window.location.href = gameURL;
 	        },
 	        onIngredientAdded(newIngredientIds) {
 	            (0, ui_1.renderDeckIngredients)(newIngredientIds.map((id) => new cards_1.UniqCard(id)));
@@ -30467,15 +30459,7 @@
 	        const { dataset } = clickedElement;
 	        switch (dataset.action) {
 	            case "play": {
-	                if (hasOpener) {
-	                    window.opener.history.pushState(null, null, `index.html?d=${dataset.cards}#rules`);
-	                    window.opener.dispatchEvent(new HashChangeEvent("hashchange"));
-	                    window.opener.focus();
-	                    window.close();
-	                }
-	                else {
-	                    window.location.href = `${rootURL}/index.html?d=${dataset.cards}#rules`;
-	                }
+	                window.location.href = `${gameURL}?d=${dataset.cards}#rules`;
 	            }
 	            case "delete": {
 	                const cardToRemove = clickedElement.closest(".card");
