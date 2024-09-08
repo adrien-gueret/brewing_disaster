@@ -55,7 +55,6 @@ import { zip, COMPRESSION_LEVEL } from "zip-a-folder";
     .replaceAll("award-index", "ai")
     .replaceAll("withPassive", "wp")
     .replaceAll("poisonnedValue", "pv")
-    .replaceAll("poisoned", "pd")
     .replaceAll("currentGame", "cg")
     .replaceAll("currentBattle", "cb")
     .replaceAll("botPassiveIds", "bp")
@@ -69,6 +68,7 @@ import { zip, COMPRESSION_LEVEL } from "zip-a-folder";
       "https://adrien-gueret.github.io/brewing_disaster/your_characters.html",
       "https://tinyurl.com/ybs6bmv8"
     )
+    .replaceAll('"use strict";', "")
     .replaceAll("./images/sprites.png", toBase64Url("./images/sprites.png"));
 
   const ids = [...indexHTML.matchAll(/id="([^"]*?)"/g)];
