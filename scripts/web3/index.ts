@@ -174,7 +174,9 @@ const gameURL =
 
     switch (dataset.action) {
       case "play": {
+        document.body.inert = true;
         window.location.href = `${gameURL}?d=${dataset.cards}#rules`;
+        break;
       }
 
       case "delete": {
