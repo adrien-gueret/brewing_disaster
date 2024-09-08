@@ -12,7 +12,6 @@ const cards_1 = require("../cards");
 const ui_1 = require("../ui");
 const askPrivateKeyForm = document.getElementById("askPrivateKeyForm");
 const privateKeyInput = document.getElementById("privateKeyInput");
-const cancelButton = document.getElementById("cancelButton");
 const privateKeyShow = document.getElementById("privateKeyShow");
 const privateKeyError = document.getElementById("privateKeyError");
 const cardSelection = document.getElementById("cardSelection");
@@ -134,7 +133,9 @@ function init({ allIngredients, onPrivateKeyEnter, onCancel, onIngredientAdded, 
         e.preventDefault();
         onPrivateKeyEnter(privateKeyInput.value);
     };
-    cancelButton.onclick = onCancel;
+    for (let backButton of document.querySelectorAll("[data-back-button]")) {
+        backButton.onclick = onCancel;
+    }
     formCreate.onsubmit = (e) => {
         e.preventDefault();
         if (ingredientsStringToIngredientArrayIds(cardsInput.value).length < 10) {

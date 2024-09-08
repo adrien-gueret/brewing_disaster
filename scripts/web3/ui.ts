@@ -9,10 +9,6 @@ const privateKeyInput = document.getElementById(
   "privateKeyInput"
 ) as HTMLInputElement;
 
-const cancelButton = document.getElementById(
-  "cancelButton"
-) as HTMLButtonElement;
-
 const privateKeyShow = document.getElementById(
   "privateKeyShow"
 ) as HTMLInputElement;
@@ -221,7 +217,9 @@ export default function init({
     onPrivateKeyEnter(privateKeyInput.value);
   };
 
-  cancelButton.onclick = onCancel;
+  for (let backButton of document.querySelectorAll("[data-back-button]")) {
+    (backButton as HTMLElement).onclick = onCancel;
+  }
 
   formCreate.onsubmit = (e) => {
     e.preventDefault();

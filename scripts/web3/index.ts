@@ -18,11 +18,9 @@ import initUI, {
   setCharacterName,
 } from "./ui";
 
-const hasOpener = Boolean(window.opener);
-
 const gameURL =
   new URLSearchParams(window.location.search).get("b") ||
-  "https://adrien-gueret.github.io/brewing_disaster/https://adrien-gueret.github.io/brewing_disaster/index.html";
+  "https://adrien-gueret.github.io/brewing_disaster/index.html";
 
 (async () => {
   initClient(
