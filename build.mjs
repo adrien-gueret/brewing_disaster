@@ -51,6 +51,24 @@ import { zip, COMPRESSION_LEVEL } from "zip-a-folder";
     .replaceAll("--shadow", "--s")
     .replaceAll("--border", "--b")
     .replaceAll("--radius", "--r")
+    .replaceAll("inlineLink", "il")
+    .replaceAll("award-index", "ai")
+    .replaceAll("withPassive", "wp")
+    .replaceAll("poisonnedValue", "pv")
+    .replaceAll("poisoned", "pd")
+    .replaceAll("currentGame", "cg")
+    .replaceAll("currentBattle", "cb")
+    .replaceAll("botPassiveIds", "bp")
+    .replaceAll("startPutridity", "sp")
+    .replaceAll("isLocked", "il")
+    .replaceAll('"player"', '"p"')
+    .replaceAll('"opponent"', '"o"')
+    .replaceAll("sectionTitle", "st")
+    .replaceAll("footerInner", "fi")
+    .replaceAll(
+      "https://adrien-gueret.github.io/brewing_disaster/your_characters.html",
+      "https://tinyurl.com/ybs6bmv8"
+    )
     .replaceAll("./images/sprites.png", toBase64Url("./images/sprites.png"));
 
   const ids = [...indexHTML.matchAll(/id="([^"]*?)"/g)];
@@ -119,7 +137,10 @@ import { zip, COMPRESSION_LEVEL } from "zip-a-folder";
         percentOfTotalBudget
     );
   } else {
-    console.log("✅ All good! " + percentOfTotalBudget);
+    console.log(
+      `✅ All good! ${JS13K_LIMIT_SIZE - size} bytes left. ` +
+        percentOfTotalBudget
+    );
   }
 
   console.log("");
