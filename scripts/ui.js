@@ -20,7 +20,7 @@ const playerDeck = document.getElementById("playerDeck");
 const battleResultsWon = document.getElementById("battleResultsWon");
 const soundsCheckbox = document.getElementById("soundsCheckbox");
 const gameWin = document.getElementById("gameWin");
-const icon = document.getElementById("icon");
+const favIcon = document.getElementById("favIcon");
 const floorCanvas = document.getElementById("floorCanvas");
 const floorCanvasCtx = floorCanvas?.getContext("2d");
 
@@ -498,7 +498,7 @@ function renderFavicon() {
     });
   });
 
-  icon.href = c.toDataURL();
+  favIcon.href = c.toDataURL();
 }
 
 export default async function init({ onPlayCard }) {

@@ -51,7 +51,7 @@ import { zip, COMPRESSION_LEVEL } from "zip-a-folder";
     .replaceAll("--shadow", "--s")
     .replaceAll("--border", "--b")
     .replaceAll("--radius", "--r")
-    .replaceAll("inlineLink", "il")
+    .replaceAll("inlineLink", "k")
     .replaceAll("award-index", "ai")
     .replaceAll("withPassive", "wp")
     .replaceAll("poisonnedValue", "pv")
@@ -60,7 +60,7 @@ import { zip, COMPRESSION_LEVEL } from "zip-a-folder";
     .replaceAll("currentBattle", "cb")
     .replaceAll("botPassiveIds", "bp")
     .replaceAll("startPutridity", "sp")
-    .replaceAll("isLocked", "il")
+    .replaceAll("isLocked", "d")
     .replaceAll('"player"', '"p"')
     .replaceAll('"opponent"', '"o"')
     .replaceAll("sectionTitle", "st")
@@ -74,14 +74,14 @@ import { zip, COMPRESSION_LEVEL } from "zip-a-folder";
   const ids = [...indexHTML.matchAll(/id="([^"]*?)"/g)];
 
   ids.forEach((id, i) => {
-    if (id[1].length > 5 && id !== "rules") {
+    if (id[1].length > 4 && id[1] !== "title" && id[1] !== "rules") {
       indexHTML = indexHTML.replaceAll(id[1], "_" + i);
     }
   });
 
   const minifiedHTML = await minify.html(indexHTML);
 
-  // fs.writeFileSync("min.html", minifiedHTML, { encoding: "utf8" });
+  fs.writeFileSync("min.html", minifiedHTML, { encoding: "utf8" });
 
   console.log("Pack project...");
   const inputToPack = [
